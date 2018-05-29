@@ -8,7 +8,7 @@ public class ArrayStorage {
     private int storageSize = 0;
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, storageSize, null);
         storageSize = 0;
     }
 
