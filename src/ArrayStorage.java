@@ -12,43 +12,46 @@ public class ArrayStorage {
         storageSize = 0;
     }
 
-    void update(Resume r) {
-        Integer i = checkResumeExistence(r.getUuid());
-        if (i != null) {
-            storage[i] = r;
+    void update(Resume resume) {
+        int resumeIndex = checkResumeExistence(resume.getUuid());
+        if (resumeIndex != -1) {
+            storage[resumeIndex] = resume;
         } else {
-            System.out.println("Resume does not exist");
+            System.out.println("Resume \"" + resume.getUuid() + "\" does not exist in storage");
         }
     }
 
-    void save(Resume r) {
+    void save(Resume resume) {
         if (storageSize == storage.length) {
-            System.out.println("Storage is overflow");
+            System.out.println("Storage overflow");
             return;
         }
-            if (checkResumeExistence(r.getUuid()) == null) {
-                storage[storageSize] = r;
-                storageSize++;
-            } else System.out.println("Resume already exists in storage");
+        if (checkResumeExistence(resume.getUuid()) == -1) {
+            storage[storageSize] = resume;
+            storageSize++;
+        } else {
+            System.out.println("Resume \"" + resume.getUuid() + "\" already exists in storage");
+        }
     }
 
     Resume get(String uuid) {
-        Integer i = checkResumeExistence(uuid);
-        if (i != null) {
-            return storage[i];
-        } else {
-            System.out.println("Resume does not exists in storage");
-            return null;
+        int resumeIndex = checkResumeExistence(uuid);
+        if (resumeIndex != -1) {
+            return storage[resumeIndex];
         }
+        System.out.println("Resume \"" + uuid + "\" does not exist in storage");
+        return null;
     }
 
     void delete(String uuid) {
-        Integer i = checkResumeExistence(uuid);
-        if (i != null) {
+        int resumeIndex = checkResumeExistence(uuid);
+        if (resumeIndex != -1) {
             storageSize--;
-            storage[i] = storage[storageSize];
+            storage[resumeIndex] = storage[storageSize];
             storage[storageSize] = null;
-        } else System.out.println("Resume does not exists in storage");
+        } else {
+            System.out.println("Resume \"" + uuid + "\" does not exist in storage");
+        }
 
     }
 
@@ -65,13 +68,15 @@ public class ArrayStorage {
     }
 
     /**
-     * @return index of Resume in storage, if resume does not exists return null
+     * @return index of Resume in storage, if resume does not exist return -1
      */
-    private Integer checkResumeExistence(String uuid) {
+    private int checkResumeExistence(String uuid) {
         for (int i = 0; i < storageSize; i++) {
-            if (storage[i].getUuid().equals(uuid)) return i;
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
         }
-        return null;
+        return -1;
     }
 }
 
