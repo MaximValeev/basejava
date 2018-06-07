@@ -2,24 +2,13 @@ package storage;
 
 import model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage implements Storage {
-    private static final int STORAGE_LIMIT = 10000;
-
-    private Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int storageSize = 0;
-
-    public void clear() {
-        Arrays.fill(storage, 0, storageSize, null);
-        storageSize = 0;
-    }
+public class ArrayStorage extends AbstractArrayStorage {
 
     public void update(Resume resume) {
-        int resumeIndex = checkResumeExistence(resume.getUuid());
+        int resumeIndex = getIndex(resume.getUuid());
         if (resumeIndex != -1) {
             storage[resumeIndex] = resume;
         } else {
@@ -28,7 +17,7 @@ public class ArrayStorage implements Storage {
     }
 
     public void save(Resume resume) {
-        if (checkResumeExistence(resume.getUuid()) != -1) {
+        if (getIndex(resume.getUuid()) != -1) {
             System.out.println("model.Resume \"" + resume.getUuid() + "\" already exists in storage");
         } else if (storageSize == STORAGE_LIMIT) {
             System.out.println("Storage overflow");
@@ -38,17 +27,8 @@ public class ArrayStorage implements Storage {
         }
     }
 
-    public Resume get(String uuid) {
-        int resumeIndex = checkResumeExistence(uuid);
-        if (resumeIndex != -1) {
-            return storage[resumeIndex];
-        }
-        System.out.println("model.Resume \"" + uuid + "\" does not exist in storage");
-        return null;
-    }
-
     public void delete(String uuid) {
-        int resumeIndex = checkResumeExistence(uuid);
+        int resumeIndex = getIndex(uuid);
         if (resumeIndex != -1) {
             storageSize--;
             storage[resumeIndex] = storage[storageSize];
@@ -60,21 +40,9 @@ public class ArrayStorage implements Storage {
     }
 
     /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, storageSize);
-
-    }
-
-    public int size() {
-        return storageSize;
-    }
-
-    /**
      * @return index of model.Resume in storage, if resume does not exist return -1
      */
-    private int checkResumeExistence(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < storageSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
