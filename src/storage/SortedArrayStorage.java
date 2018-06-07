@@ -33,7 +33,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             } else {
                 System.arraycopy(storage, 0, resultStorage, 0, insertionPoint);
                 resultStorage[insertionPoint] = resume;
-                System.arraycopy(storage, insertionPoint, resultStorage, insertionPoint + 1, storageSize);
+                System.arraycopy(storage, insertionPoint, resultStorage, insertionPoint + 1, storageSize - insertionPoint);
                 storage = resultStorage;
             }
             storageSize++;
