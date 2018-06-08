@@ -26,16 +26,12 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         } else {
             int insertionPoint = Math.abs(resumeIndex) - 1;
             Resume[] resultStorage = new Resume[storage.length];
-            if (resumeIndex == -1) {
-                System.arraycopy(storage, 0, resultStorage, 1, storageSize);
-                resultStorage[insertionPoint] = resume;
-                storage = resultStorage;
-            } else {
-                System.arraycopy(storage, 0, resultStorage, 0, insertionPoint);
-                resultStorage[insertionPoint] = resume;
-                System.arraycopy(storage, insertionPoint, resultStorage, insertionPoint + 1, storageSize - insertionPoint);
-                storage = resultStorage;
-            }
+
+            System.arraycopy(storage, 0, resultStorage, 0, insertionPoint);
+            resultStorage[insertionPoint] = resume;
+            System.arraycopy(storage, insertionPoint, resultStorage, insertionPoint + 1, storageSize - insertionPoint);
+            storage = resultStorage;
+
             storageSize++;
         }
     }
