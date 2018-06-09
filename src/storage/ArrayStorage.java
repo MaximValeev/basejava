@@ -8,7 +8,7 @@ import model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void put(Resume resume) {
+    protected void put(Resume resume, int index) {
         storage[storageSize] = resume;
     }
 
