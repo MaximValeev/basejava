@@ -9,20 +9,16 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void put(Resume resume) {
         int insertionPoint = Math.abs(getIndex(resume.getUuid())) - 1;
-        Resume[] resultStorage = new Resume[storage.length];
 
-        System.arraycopy(storage, 0, resultStorage, 0, insertionPoint);
-        resultStorage[insertionPoint] = resume;
-        System.arraycopy(storage, insertionPoint, resultStorage, insertionPoint + 1, storageSize - insertionPoint);
-        storage = resultStorage;
+        System.arraycopy(storage, 0, storage, 0, insertionPoint);
+        storage[insertionPoint] = resume;
+        System.arraycopy(storage, insertionPoint, storage, insertionPoint + 1, storageSize - insertionPoint);
     }
 
     @Override
     protected void erase(int index) {
-        Resume[] resultStorage = new Resume[storage.length];
-        System.arraycopy(storage, 0, resultStorage, 0, index);
-        System.arraycopy(storage, index + 1, resultStorage, index, storageSize);
-        storage = resultStorage;
+        System.arraycopy(storage, 0, storage, 0, index);
+        System.arraycopy(storage, index + 1, storage, index, storageSize);
     }
 
     @Override

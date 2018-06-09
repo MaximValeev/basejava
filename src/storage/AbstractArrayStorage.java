@@ -21,14 +21,14 @@ public abstract class AbstractArrayStorage implements Storage {
         if (resumeIndex >= 0) {
             storage[resumeIndex] = resume;
         } else {
-            System.out.println("Resume \"" + resume.getUuid() + "\" does not exist in storage");
+            System.out.println("Resume with uuid = \"" + resume.getUuid() + "\" does not exist in storage");
         }
     }
 
     @Override
     public void save(Resume resume) {
         if (getIndex(resume.getUuid()) >= 0) {
-            System.out.println("Resume \"" + resume.getUuid() + "\" already exists in storage");
+            System.out.println("Resume with uuid = \"" + resume.getUuid() + "\" already exists in storage");
         } else if (storageSize == STORAGE_LIMIT) {
             System.out.println("Storage overflow");
         } else {
@@ -42,7 +42,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (resumeIndex >= 0) {
             return storage[resumeIndex];
         }
-        System.out.println("Resume \"" + uuid + "\" does not exist in storage");
+        System.out.println("Resume with uuid = \"" + uuid + "\" does not exist in storage");
         return null;
     }
 
@@ -51,9 +51,10 @@ public abstract class AbstractArrayStorage implements Storage {
         int resumeIndex = getIndex(uuid);
         if (resumeIndex >= 0) {
             erase(resumeIndex);
+            storage[storageSize - 1] = null;
             storageSize--;
         } else {
-            System.out.println("Resume \"" + uuid + "\" does not exist in storage");
+            System.out.println("Resume with uuid = \"" + uuid + "\" does not exist in storage");
         }
 
     }

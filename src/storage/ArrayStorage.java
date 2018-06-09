@@ -15,7 +15,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void erase(int index) {
         storage[index] = storage[storageSize - 1];
-        storage[storageSize - 1] = null;
     }
 
     /**
