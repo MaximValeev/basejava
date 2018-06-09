@@ -15,7 +15,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void erase(int index) {
-        System.arraycopy(storage, index + 1, storage, index, storageSize);
+        System.arraycopy(storage, index+1, storage, index, storageSize - index-1);
     }
 
     @Override
