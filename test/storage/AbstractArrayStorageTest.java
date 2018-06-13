@@ -32,12 +32,6 @@ public abstract class AbstractArrayStorageTest {
         this.storage = storage;
     }
 
-    @Rule
-    public ExpectedException notExistStorageException = ExpectedException.none();
-
-    @Rule
-    public ExpectedException storageOverflow = ExpectedException.none();
-
     @Before
     public void setUp() {
         storage.clear();
