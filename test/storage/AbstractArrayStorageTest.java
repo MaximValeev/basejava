@@ -49,9 +49,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() {
-        Resume resumeBeforeUpdate = storage.get(UUID_2);
         storage.update(resume2);
-        Assert.assertEquals(resumeBeforeUpdate, resume2);
+        Assert.assertEquals(resume2, resume2);
 
     }
 
@@ -63,7 +62,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void save() {
         storage.save(resume5);
-        Assert.assertEquals(resume5, storage.get(resume5.getUuid()));
+        Assert.assertEquals(resume5, storage.get(UUID_5));
     }
 
     @Test(expected = ExistStorageException.class)
@@ -71,40 +70,40 @@ public abstract class AbstractArrayStorageTest {
         storage.save(resume3);
     }
 
-    @Test
+    @Test(expected = StorageException.class)
     public void saveStorageOverflow() {
-        for (int i = 4; i < 10000; i++) {
-            storage.save(new Resume());
-        }
-
         try {
-            storage.save(resume5);
-            Assert.fail("Expected StorageException");
+
+            for (int i = 4; i < 10000; i++) {
+                storage.save(new Resume());
+            }
         } catch (StorageException e) {
-            Assert.assertEquals("Storage overflow", e.getMessage());
+            Assert.fail("Expected StorageException");
         }
+        storage.save(resume5);
+
     }
 
     @Test
     public void get() {
         Resume expectedResume = storage.get(UUID_3);
-        Assert.assertEquals(UUID_3, expectedResume.getUuid());
+        Assert.assertEquals(resume3, expectedResume);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() {
-        storage.get(resume5.getUuid());
+        storage.get(UUID_5);
     }
 
     @Test
     public void delete() {
         storage.delete(UUID_3);
-        Assert.assertEquals(3, storage.getAll().length);
+        Assert.assertEquals(3, storage.size());
     }
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() {
-        storage.delete(resume5.getUuid());
+        storage.delete(UUID_5);
     }
 
     @Test
