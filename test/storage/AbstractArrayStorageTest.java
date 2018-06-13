@@ -6,9 +6,7 @@ import exception.StorageException;
 import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 
@@ -50,7 +48,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void update() {
         storage.update(resume2);
-        Assert.assertEquals(resume2, resume2);
+        Assert.assertEquals(resume2, storage.get(UUID_2));
 
     }
 
