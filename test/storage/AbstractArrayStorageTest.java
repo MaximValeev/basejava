@@ -55,8 +55,14 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() {
+        Resume resumeBeforeUpdate = storage.get(UUID_2);
         storage.update(resume2);
-        notExistStorageException.expect(NotExistStorageException.class);
+        Assert.assertEquals(resumeBeforeUpdate, resume2);
+
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void updateNotExist() {
         storage.update(resume5);
     }
 
@@ -76,9 +82,13 @@ public abstract class AbstractArrayStorageTest {
         for (int i = 4; i < 10000; i++) {
             storage.save(new Resume());
         }
-        storageOverflow.expect(StorageException.class);
-        storageOverflow.expectMessage("Storage overflow");
-        storage.save(resume5);
+
+        try {
+            storage.save(resume5);
+            Assert.fail("Expected StorageException");
+        } catch (StorageException e) {
+            Assert.assertEquals("Storage overflow", e.getMessage());
+        }
     }
 
     @Test
