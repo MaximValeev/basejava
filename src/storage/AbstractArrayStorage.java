@@ -12,71 +12,49 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int storageSize = 0;
 
     @Override
-    protected void eraseAllElements() {
+    public void clear() {
         Arrays.fill(storage, 0, storageSize, null);
         storageSize = 0;
     }
 
     @Override
-    protected Resume updateElement(Resume resume) {
-        int resumeIndex = getIndex(resume.getUuid());
-        if (resumeIndex >= 0) {
-            Resume resumeToUpdate = storage[resumeIndex];
-            storage[resumeIndex] = resume;
-            return resumeToUpdate;
-        } else {
-            return null;
-        }
+    protected void updateElement(Object index, Resume resume) {
+        storage[(int) index] = resume;
     }
 
     @Override
-    protected boolean saveElement(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            return false;
-        } else if (storageSize == STORAGE_LIMIT) {
+    protected void saveElement(Object index, Resume resume) {
+        if (storageSize == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         } else {
-            put(resume, index);
+            put(resume, (int) index);
             storageSize++;
-            return true;
         }
     }
 
     @Override
-    protected Resume getElement(String uuid) {
-        int resumeIndex = getIndex(uuid);
-        if (resumeIndex >= 0) {
-            return storage[resumeIndex];
-        } else {
-            return null;
-        }
+    protected Resume getElement(Object index) {
+        return storage[(int) index];
     }
 
     @Override
-    protected boolean deleteElement(String uuid) {
-        int resumeIndex = getIndex(uuid);
-        if (resumeIndex >= 0) {
-            erase(resumeIndex);
-            storage[storageSize - 1] = null;
-            storageSize--;
-            return true;
-        } else {
-            return false;
-        }
+    protected void deleteElement(Object index) {
+        erase((Integer) index);
+        storage[storageSize - 1] = null;
+        storageSize--;
     }
 
     @Override
-    protected Resume[] getAllElements() {
-        return Arrays.copyOf(storage, storageSize);
-    }
-
-    @Override
-    protected int getSize() {
+    public int size() {
         return storageSize;
     }
 
-    protected abstract int getIndex(String uuid);
+    @Override
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, storageSize);
+    }
+
+    protected abstract Object getKey(String uuid);
 
     protected abstract void put(Resume resume, int index);
 

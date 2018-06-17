@@ -21,7 +21,7 @@ public class ArrayStorage extends AbstractArrayStorage {
      * @return index of model.Resume in storage, if resume does not exist return -1
      */
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getKey(String uuid) {
         for (int i = 0; i < storageSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

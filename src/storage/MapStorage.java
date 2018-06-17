@@ -10,54 +10,46 @@ public class MapStorage extends AbstractStorage {
     Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected void eraseAllElements() {
+    public void clear() {
         storage.clear();
     }
 
     @Override
-    protected Resume updateElement(Resume resume) {
-        Resume resumeToUpdate = storage.get(resume.getUuid());
-        if (resumeToUpdate != null) {
-            storage.put(resume.getUuid(), resume);
-            return resume;
-        } else {
-            return null;
-        }
+    protected void updateElement(Object key, Resume resume) {
+        storage.replace((String) key, resume);
     }
 
     @Override
-    protected boolean saveElement(Resume resume) {
-        if (storage.containsKey(resume.getUuid())) {
-            return false;
-        } else {
-            storage.put(resume.getUuid(), resume);
-            return true;
-        }
+    protected void saveElement(Object key, Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getElement(String uuid) {
-        return storage.get(uuid);
+    protected Resume getElement(Object key) {
+        return storage.get((String) key);
     }
 
     @Override
-    protected boolean deleteElement(String uuid) {
-        Resume resume = storage.get(uuid);
-        if (resume != null) {
-            storage.remove(uuid);
-            return true;
-        } else {
-            return false;
-        }
+    protected void deleteElement(Object key) {
+        storage.remove((String) key);
     }
 
     @Override
-    public Resume[] getAllElements() {
+    public Resume[] getAll() {
         return storage.values().toArray(new Resume[0]);
     }
 
     @Override
-    protected int getSize() {
+    public int size() {
         return storage.size();
+    }
+
+    @Override
+    protected Object getKey(String uuid) {
+        if (storage.containsKey(uuid)) {
+            return uuid;
+        } else {
+            return null;
+        }
     }
 }

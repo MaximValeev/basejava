@@ -7,63 +7,44 @@ import java.util.ArrayList;
 public class ListStorage extends AbstractStorage {
     private ArrayList<Resume> storage = new ArrayList<>();
 
-
     @Override
-    protected void eraseAllElements() {
+    public void clear() {
         storage.clear();
     }
 
     @Override
-    protected Resume updateElement(Resume resume) {
-        int position = storage.indexOf(resume);
-        if (position >= 0) {
-            Resume resumeToUpdate = storage.get(position);
-            storage.set(position, resume);
-            return resumeToUpdate;
-        } else {
-            return null;
-        }
+    protected void updateElement(Object index, Resume resume) {
+        storage.set((Integer) index, resume);
     }
 
     @Override
-    protected boolean saveElement(Resume resume) {
-        int index = storage.indexOf(resume);
-        if (index >= 0) {
-            return false;
-        } else {
-            storage.add(resume);
-            return true;
-        }
+    protected void saveElement(Object index, Resume resume) {
+        storage.add(resume);
     }
 
     @Override
-    protected Resume getElement(String uuid) {
-        for (Resume resume : storage) {
-            if (resume.getUuid().equals(uuid)) {
-                return resume;
-            }
-        }
-        return null;
+    protected Resume getElement(Object index) {
+        return storage.get((Integer) index);
     }
 
     @Override
-    protected boolean deleteElement(String uuid) {
-        Resume resume = getElement(uuid);
-        if (resume != null) {
-            storage.remove(resume);
-            return true;
-        } else {
-            return false;
-        }
+    protected void deleteElement(Object index) {
+        storage.remove((int) index);
     }
 
     @Override
-    protected Resume[] getAllElements() {
+    public Resume[] getAll() {
         return storage.toArray(new Resume[0]);
     }
 
     @Override
-    public int getSize() {
+    public int size() {
         return storage.size();
+    }
+
+    @Override
+    protected Object getKey(String uuid) {
+        Resume searchResume = new Resume(uuid);
+        return storage.indexOf(searchResume);
     }
 }

@@ -7,29 +7,30 @@ import model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     @Override
-    public void clear() {
-        eraseAllElements();
-    }
-
-    @Override
     public void update(Resume resume) {
-        if (updateElement(resume) == null) {
+        Object key = getKey(resume.getUuid());
+        if ((key instanceof Integer && (Integer) key >= 0) || (key instanceof String && !key.equals("null"))) {
+            updateElement(key, resume);
+        } else {
             throw new NotExistStorageException(resume.getUuid());
         }
     }
 
     @Override
     public void save(Resume resume) {
-        if (!saveElement(resume)) {
+        Object key = getKey(resume.getUuid());
+        if ((key instanceof Integer && (Integer) key >= 0) || (key instanceof String && !key.equals("null"))) {
             throw new ExistStorageException(resume.getUuid());
+        } else {
+            saveElement(key, resume);
         }
     }
 
     @Override
     public Resume get(String uuid) {
-        Resume resume = getElement(uuid);
-        if (resume != null) {
-            return resume;
+        Object key = getKey(uuid);
+        if ((key instanceof Integer && (Integer) key >= 0) || (key instanceof String && !key.equals("null"))) {
+            return getElement(key);
         } else {
             throw new NotExistStorageException(uuid);
         }
@@ -37,33 +38,22 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        if (!deleteElement(uuid)) {
+        Object key = getKey(uuid);
+        if ((key instanceof Integer && (Integer) key >= 0) || (key instanceof String && !key.equals("null"))) {
+            deleteElement(key);
+        } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    @Override
-    public Resume[] getAll() {
-        return getAllElements();
-    }
+    protected abstract void updateElement(Object key, Resume resume);
 
-    public int size() {
-        return getSize();
-    }
+    protected abstract void saveElement(Object key, Resume resume);
 
+    protected abstract Resume getElement(Object key);
 
-    protected abstract void eraseAllElements();
+    protected abstract void deleteElement(Object key);
 
-    protected abstract Resume updateElement(Resume resume);
-
-    protected abstract boolean saveElement(Resume resume);
-
-    protected abstract Resume getElement(String uuid);
-
-    protected abstract boolean deleteElement(String uuid);
-
-    protected abstract Resume[] getAllElements();
-
-    protected abstract int getSize();
+    protected abstract Object getKey(String uuid);
 
 }
