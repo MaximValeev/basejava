@@ -1,6 +1,5 @@
 package storage;
 
-import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.ArrayList;
@@ -8,15 +7,6 @@ import java.util.ArrayList;
 public class ListStorage extends AbstractStorage {
     private ArrayList<Resume> storage = new ArrayList<>();
 
-    @Override
-    public void delete(String uuid) {
-        int resumeIndex = storage.indexOf(getElement(uuid));
-        if (resumeIndex >= 0) {
-            storage.remove(resumeIndex);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
 
     @Override
     protected void eraseAllElements() {
