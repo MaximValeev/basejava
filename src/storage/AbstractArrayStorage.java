@@ -1,76 +1,78 @@
 package storage;
 
-import exception.ExistStorageException;
-import exception.NotExistStorageException;
 import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int storageSize = 0;
 
-    public void clear() {
+    @Override
+    protected void eraseAllElements() {
         Arrays.fill(storage, 0, storageSize, null);
         storageSize = 0;
     }
 
     @Override
-    public void update(Resume resume) {
+    protected Resume updateElement(Resume resume) {
         int resumeIndex = getIndex(resume.getUuid());
         if (resumeIndex >= 0) {
+            Resume resumeToUpdate = storage[resumeIndex];
             storage[resumeIndex] = resume;
+            return resumeToUpdate;
         } else {
-            throw new NotExistStorageException(resume.getUuid());
+            return null;
         }
     }
 
     @Override
-    public void save(Resume resume) {
+    protected boolean saveElement(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid());
+            return false;
         } else if (storageSize == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         } else {
             put(resume, index);
             storageSize++;
+            return true;
         }
-    }
-
-    public Resume get(String uuid) {
-        int resumeIndex = getIndex(uuid);
-        if (resumeIndex >= 0) {
-            return storage[resumeIndex];
-        }
-        throw new NotExistStorageException(uuid);
     }
 
     @Override
-    public void delete(String uuid) {
+    protected Resume getElement(String uuid) {
+        int resumeIndex = getIndex(uuid);
+        if (resumeIndex >= 0) {
+            return storage[resumeIndex];
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    protected boolean deleteElement(String uuid) {
         int resumeIndex = getIndex(uuid);
         if (resumeIndex >= 0) {
             erase(resumeIndex);
             storage[storageSize - 1] = null;
             storageSize--;
+            return true;
         } else {
-            throw new NotExistStorageException(uuid);
+            return false;
         }
-
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
+    @Override
+    protected Resume[] getAllElements() {
         return Arrays.copyOf(storage, storageSize);
-
     }
 
-    public int size() {
+    @Override
+    protected int getSize() {
         return storageSize;
     }
 
