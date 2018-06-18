@@ -13,23 +13,42 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateElement(Object index, Resume resume) {
-        storage.set((Integer) index, resume);
+    protected boolean updateElement(Object index, Resume resume) {
+        if (index != null) {
+            storage.set((Integer) index, resume);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    protected void saveElement(Object index, Resume resume) {
-        storage.add(resume);
+    protected boolean saveElement(Object index, Resume resume) {
+        if (index == null) {
+            storage.add(resume);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected Resume getElement(Object index) {
-        return storage.get((Integer) index);
+        if (index != null) {
+            return storage.get((Integer) index);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    protected void deleteElement(Object index) {
-        storage.remove((int) index);
+    protected boolean deleteElement(Object index) {
+        if (index != null) {
+            storage.remove((int) index);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -44,7 +63,11 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object getKey(String uuid) {
-        Resume searchResume = new Resume(uuid);
-        return storage.indexOf(searchResume);
+        for (int i = 0; i < storage.size(); i++) {
+            if (uuid.equals(storage.get(i).getUuid())) {
+                return i;
+            }
+        }
+        return null;
     }
 }

@@ -15,23 +15,43 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateElement(Object key, Resume resume) {
-        storage.replace((String) key, resume);
+    protected boolean updateElement(Object key, Resume resume) {
+        if (key != null) {
+            storage.replace((String) key, resume);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    protected void saveElement(Object key, Resume resume) {
-        storage.put(resume.getUuid(), resume);
+    protected boolean saveElement(Object key, Resume resume) {
+        if (key == null) {
+            storage.put(resume.getUuid(), resume);
+            return true;
+        } else {
+            return false;
+
+        }
     }
 
     @Override
     protected Resume getElement(Object key) {
-        return storage.get((String) key);
+        if (key != null) {
+            return storage.get(key.toString());
+        } else {
+            return null;
+        }
     }
 
     @Override
-    protected void deleteElement(Object key) {
-        storage.remove((String) key);
+    protected boolean deleteElement(Object key) {
+        if (key != null) {
+            storage.remove(key.toString());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
