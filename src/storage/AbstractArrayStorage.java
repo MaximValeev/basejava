@@ -34,11 +34,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected Resume getElement(Object index) {
-        if ((int) index >= 0) {
             return storage[(int) index];
-        } else {
-            return null;
-        }
     }
 
     @Override
