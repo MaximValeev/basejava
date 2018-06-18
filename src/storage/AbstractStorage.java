@@ -10,47 +10,57 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void update(Resume resume) {
         String uuid = resume.getUuid();
-        boolean operationResult = updateElement(getKey(uuid), resume);
-        handleOperationResult(operationResult, new NotExistStorageException(uuid));
+        Object key = getKey(uuid);
+        if (handleContainsResult(contains(key), new NotExistStorageException(uuid))) {
+            updateElement(key, resume);
+        }
     }
 
     @Override
     public void save(Resume resume) {
         String uuid = resume.getUuid();
-        boolean operationResult = saveElement(getKey(uuid), resume);
-        handleOperationResult(operationResult, new ExistStorageException(uuid));
+        Object key = getKey(uuid);
+        if (handleContainsResult(!contains(key), new ExistStorageException(uuid))) {
+            saveElement(key, resume);
+        }
     }
 
     @Override
     public Resume get(String uuid) {
-        Resume resume = getElement(getKey(uuid));
-        if (resume == null) {
-            throw new NotExistStorageException(uuid);
+        Object key = getKey(uuid);
+        if (contains(key)) {
+            return getElement(key);
         } else {
-            return resume;
+            throw new NotExistStorageException(uuid);
         }
-
     }
 
     @Override
     public void delete(String uuid) {
-        boolean operationResult = deleteElement(getKey(uuid));
-        handleOperationResult(operationResult, new NotExistStorageException(uuid));
+        Object key = getKey(uuid);
+        if (handleContainsResult(contains(key), new NotExistStorageException(uuid))) {
+            deleteElement(key);
+        }
+
     }
 
-    private void handleOperationResult(boolean operationStatus, StorageException exception) {
-        if (!operationStatus) {
+    private boolean handleContainsResult(boolean isContain, StorageException exception) {
+        if (isContain) {
+            return true;
+        } else {
             throw exception;
         }
     }
 
-    protected abstract boolean updateElement(Object key, Resume resume);
+    protected abstract boolean contains(Object key);
 
-    protected abstract boolean saveElement(Object key, Resume resume);
+    protected abstract void updateElement(Object key, Resume resume);
+
+    protected abstract void saveElement(Object key, Resume resume);
 
     protected abstract Resume getElement(Object key);
 
-    protected abstract boolean deleteElement(Object key);
+    protected abstract void deleteElement(Object key);
 
     protected abstract Object getKey(String uuid);
 

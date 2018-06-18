@@ -15,43 +15,23 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean updateElement(Object key, Resume resume) {
-        if (key != null) {
-            storage.replace((String) key, resume);
-            return true;
-        } else {
-            return false;
-        }
+    protected void updateElement(Object key, Resume resume) {
+        storage.replace((String) key, resume);
     }
 
     @Override
-    protected boolean saveElement(Object key, Resume resume) {
-        if (key == null) {
-            storage.put(resume.getUuid(), resume);
-            return true;
-        } else {
-            return false;
-
-        }
+    protected void saveElement(Object key, Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected Resume getElement(Object key) {
-        if (key != null) {
-            return storage.get(key.toString());
-        } else {
-            return null;
-        }
+        return storage.get(key.toString());
     }
 
     @Override
-    protected boolean deleteElement(Object key) {
-        if (key != null) {
-            storage.remove(key.toString());
-            return true;
-        } else {
-            return false;
-        }
+    protected void deleteElement(Object key) {
+        storage.remove(key.toString());
     }
 
     @Override
@@ -71,5 +51,10 @@ public class MapStorage extends AbstractStorage {
         } else {
             return null;
         }
+    }
+
+    @Override
+    protected boolean contains(Object key) {
+        return key != null;
     }
 }
