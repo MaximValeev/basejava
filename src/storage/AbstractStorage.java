@@ -2,7 +2,6 @@ package storage;
 
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
-import exception.StorageException;
 import model.Resume;
 
 public abstract class AbstractStorage implements Storage {
@@ -10,41 +9,41 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void update(Resume resume) {
         String uuid = resume.getUuid();
-        updateElement(handleContainsResult(uuid, new NotExistStorageException(uuid)), resume);
+        updateElement(handleContainsResult(uuid), resume);
     }
 
     @Override
     public void save(Resume resume) {
         String uuid = resume.getUuid();
-        saveElement(handleNotContainsResult(uuid, new ExistStorageException(uuid)), resume);
+        saveElement(handleNotContainsResult(uuid), resume);
     }
 
     @Override
     public Resume get(String uuid) {
-        return getElement(handleContainsResult(uuid, new NotExistStorageException(uuid)));
+        return getElement(handleContainsResult(uuid));
     }
 
     @Override
     public void delete(String uuid) {
-        deleteElement(handleContainsResult(uuid, new NotExistStorageException(uuid)));
+        deleteElement(handleContainsResult(uuid));
 
     }
 
-    private Object handleContainsResult(String uuid, StorageException exception) {
+    private Object handleContainsResult(String uuid) {
         Object key = getKey(uuid);
         if (contains(key)) {
             return key;
         } else {
-            throw exception;
+            throw new NotExistStorageException(uuid);
         }
     }
 
-    private Object handleNotContainsResult(String uuid, StorageException exception) {
+    private Object handleNotContainsResult(String uuid) {
         Object key = getKey(uuid);
         if (!contains(key)) {
             return key;
         } else {
-            throw exception;
+            throw new ExistStorageException(uuid);
         }
     }
 
