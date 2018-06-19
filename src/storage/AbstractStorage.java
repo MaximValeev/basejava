@@ -10,43 +10,39 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void update(Resume resume) {
         String uuid = resume.getUuid();
-        Object key = getKey(uuid);
-        if (handleContainsResult(contains(key), new NotExistStorageException(uuid))) {
-            updateElement(key, resume);
-        }
+        updateElement(handleContainsResult(uuid, new NotExistStorageException(uuid)), resume);
     }
 
     @Override
     public void save(Resume resume) {
         String uuid = resume.getUuid();
-        Object key = getKey(uuid);
-        if (handleContainsResult(!contains(key), new ExistStorageException(uuid))) {
-            saveElement(key, resume);
-        }
+        saveElement(handleNotContainsResult(uuid, new ExistStorageException(uuid)), resume);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object key = getKey(uuid);
-        if (contains(key)) {
-            return getElement(key);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+        return getElement(handleContainsResult(uuid, new NotExistStorageException(uuid)));
     }
 
     @Override
     public void delete(String uuid) {
-        Object key = getKey(uuid);
-        if (handleContainsResult(contains(key), new NotExistStorageException(uuid))) {
-            deleteElement(key);
-        }
+        deleteElement(handleContainsResult(uuid, new NotExistStorageException(uuid)));
 
     }
 
-    private boolean handleContainsResult(boolean isContain, StorageException exception) {
-        if (isContain) {
-            return true;
+    private Object handleContainsResult(String uuid, StorageException exception) {
+        Object key = getKey(uuid);
+        if (contains(key)) {
+            return key;
+        } else {
+            throw exception;
+        }
+    }
+
+    private Object handleNotContainsResult(String uuid, StorageException exception) {
+        Object key = getKey(uuid);
+        if (!contains(key)) {
+            return key;
         } else {
             throw exception;
         }
