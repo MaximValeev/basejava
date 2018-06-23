@@ -4,47 +4,61 @@ import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        String uuid = resume.getUuid();
-        updateElement(handleContainsResult(uuid), resume);
+        String identifier = getIdentifier(resume);
+        updateElement(handleContainsResult(identifier), resume);
     }
 
     @Override
     public void save(Resume resume) {
-        String uuid = resume.getUuid();
+        String uuid = getIdentifier(resume);
         saveElement(handleNotContainsResult(uuid), resume);
     }
 
     @Override
-    public Resume get(String uuid) {
-        return getElement(handleContainsResult(uuid));
+    public Resume get(String identifier) {
+        return getElement(handleContainsResult(identifier));
     }
 
     @Override
-    public void delete(String uuid) {
-        deleteElement(handleContainsResult(uuid));
+    public void delete(String identifier) {
+        deleteElement(handleContainsResult(identifier));
 
     }
 
-    private Object handleContainsResult(String uuid) {
-        Object key = getKey(uuid);
-        if (contains(key)) {
-            return key;
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> resumeList = getResumeList();
+        Collections.sort(resumeList);
+        return resumeList;
+    }
+
+    private Object handleContainsResult(String identifier) {
+        Object searchKey = getSearchKey(identifier);
+        if (contains(searchKey)) {
+            return searchKey;
         } else {
-            throw new NotExistStorageException(uuid);
+            throw new NotExistStorageException(identifier);
         }
     }
 
-    private Object handleNotContainsResult(String uuid) {
-        Object key = getKey(uuid);
-        if (!contains(key)) {
-            return key;
+    private Object handleNotContainsResult(String identifier) {
+        Object searchKey = getSearchKey(identifier);
+        if (!contains(searchKey)) {
+            return searchKey;
         } else {
-            throw new ExistStorageException(uuid);
+            throw new ExistStorageException(identifier);
         }
+    }
+
+    protected String getIdentifier(Resume resume) {
+        return resume.getUuid();
     }
 
     protected abstract boolean contains(Object key);
@@ -57,6 +71,9 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void deleteElement(Object key);
 
-    protected abstract Object getKey(String uuid);
+    protected abstract Object getSearchKey(String searchKey);
+
+    protected abstract List<Resume> getResumeList();
+
 
 }

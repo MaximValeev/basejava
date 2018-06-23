@@ -1,9 +1,6 @@
 package storage;
 
-import model.Resume;
-import org.junit.Assert;
-
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
 
 public class MapStorageTest extends AbstractStorageTest {
 
@@ -12,10 +9,35 @@ public class MapStorageTest extends AbstractStorageTest {
     }
 
     @Override
-    public void getAll() {
-        Resume[] allResumes = {resume1, resume2, resume3, resume4};
-        Resume[] allFromMapStorage = storage.getAll();
-        Arrays.sort(allFromMapStorage);
-        Assert.assertTrue(Arrays.equals(allResumes, allFromMapStorage));
+    public void update() {
+        storage.update(resume2);
+        assertEquals(resume2, storage.get(FULL_NAME_2));
+    }
+
+    @Override
+    public void save() {
+        storage.save(resume5);
+        assertEquals(resume5, storage.get(FULL_NAME_5));
+    }
+
+    @Override
+    public void get() {
+        assertEquals(resume3, storage.get(FULL_NAME_3));
+    }
+
+    @Override
+    public void getNotExist() {
+        storage.get(FULL_NAME_5);
+    }
+
+    @Override
+    public void delete() {
+        storage.delete(FULL_NAME_3);
+        assertEquals(3, storage.size());
+    }
+
+    @Override
+    public void deleteNotExist() {
+        storage.delete(FULL_NAME_5);
     }
 }

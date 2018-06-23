@@ -2,12 +2,13 @@ package storage;
 
 import model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-
-    Map<String, Resume> storage = new HashMap<>();
+    protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
@@ -21,7 +22,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void saveElement(Object key, Resume resume) {
-        storage.put(resume.getUuid(), resume);
+        storage.put(resume.getFullName(), resume);
     }
 
     @Override
@@ -35,22 +36,27 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
+    protected List<Resume> getResumeList() {
+        return new ArrayList<>(storage.values());
+    }
+
+    @Override
+    protected Object getSearchKey(String key) {
+        if (storage.containsKey(key)) {
+            return key;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    protected String getIdentifier(Resume resume) {
+        return resume.getFullName();
     }
 
     @Override
     public int size() {
         return storage.size();
-    }
-
-    @Override
-    protected Object getKey(String uuid) {
-        if (storage.containsKey(uuid)) {
-            return uuid;
-        } else {
-            return null;
-        }
     }
 
     @Override

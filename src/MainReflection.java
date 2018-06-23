@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 public class MainReflection {
     public static void main(String[] args) {
-        Resume resume = new Resume();
+        Resume resume = new Resume("");
         Method resumeToString;
 
         try {

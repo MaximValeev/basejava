@@ -4,12 +4,13 @@ import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
-    protected static final int STORAGE_LIMIT = 10000;
+    private static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int storageSize = 0;
+    int storageSize = 0;
 
     @Override
     public void clear() {
@@ -34,7 +35,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected Resume getElement(Object index) {
-            return storage[(int) index];
+        return storage[(int) index];
     }
 
     @Override
@@ -55,11 +56,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, storageSize);
+    protected List<Resume> getResumeList() {
+        return Arrays.asList(Arrays.copyOf(storage, storageSize));
     }
 
-    protected abstract Object getKey(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract void put(Resume resume, int index);
 

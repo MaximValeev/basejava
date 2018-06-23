@@ -3,12 +3,14 @@ package storage;
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
 
@@ -20,11 +22,17 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final String UUID_5 = "uuid5";
 
-    Resume resume1 = new Resume(UUID_1);
-    Resume resume2 = new Resume(UUID_2);
-    Resume resume3 = new Resume(UUID_3);
-    Resume resume4 = new Resume(UUID_4);
-    Resume resume5 = new Resume(UUID_5);
+    protected static final String FULL_NAME_1 = "Nathan";
+    protected static final String FULL_NAME_2 = "Kratos";
+    protected static final String FULL_NAME_3 = "Link";
+    protected static final String FULL_NAME_4 = "Joel";
+    protected static final String FULL_NAME_5 = "Zelda";
+
+    Resume resume1 = new Resume(UUID_1, FULL_NAME_1);
+    Resume resume2 = new Resume(UUID_2, FULL_NAME_2);
+    Resume resume3 = new Resume(UUID_3, FULL_NAME_3);
+    Resume resume4 = new Resume(UUID_4, FULL_NAME_4);
+    Resume resume5 = new Resume(UUID_5, FULL_NAME_5);
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -90,9 +98,15 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
-        Resume[] allResumes = {resume1, resume2, resume3, resume4};
-        assertTrue(Arrays.equals(allResumes, storage.getAll()));
+    public void getAllSorted() {
+        List<Resume> benchmarkList = new ArrayList<>();
+        benchmarkList.add(resume4);
+        benchmarkList.add(resume2);
+        benchmarkList.add(resume3);
+        benchmarkList.add(resume1);
+
+        List<Resume> sortedList = storage.getAllSorted();
+        Assert.assertEquals(benchmarkList, sortedList);
     }
 
     @Test
