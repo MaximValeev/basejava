@@ -104,7 +104,6 @@ public abstract class AbstractStorageTest {
         benchmarkList.add(resume2);
         benchmarkList.add(resume3);
         benchmarkList.add(resume1);
-
         List<Resume> sortedList = storage.getAllSorted();
         Assert.assertEquals(benchmarkList, sortedList);
     }

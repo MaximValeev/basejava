@@ -14,7 +14,6 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     @Test(expected = StorageException.class)
     public void saveStorageOverflow() {
         try {
-
             for (int i = 4; i < 10000; i++) {
                 storage.save(new Resume(""));
             }

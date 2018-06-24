@@ -11,25 +11,24 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        String identifier = getIdentifier(resume);
-        updateElement(handleContainsResult(identifier), resume);
+        String uuid = resume.getUuid();
+        updateElement(handleContainsResult(uuid), resume);
     }
 
     @Override
     public void save(Resume resume) {
-        String uuid = getIdentifier(resume);
+        String uuid = resume.getUuid();
         saveElement(handleNotContainsResult(uuid), resume);
     }
 
     @Override
-    public Resume get(String identifier) {
-        return getElement(handleContainsResult(identifier));
+    public Resume get(String uuid) {
+        return getElement(handleContainsResult(uuid));
     }
 
     @Override
-    public void delete(String identifier) {
-        deleteElement(handleContainsResult(identifier));
-
+    public void delete(String uuid) {
+        deleteElement(handleContainsResult(uuid));
     }
 
     @Override
@@ -39,26 +38,22 @@ public abstract class AbstractStorage implements Storage {
         return resumeList;
     }
 
-    private Object handleContainsResult(String identifier) {
-        Object searchKey = getSearchKey(identifier);
+    private Object handleContainsResult(String uuid) {
+        Object searchKey = getSearchKey(uuid);
         if (contains(searchKey)) {
             return searchKey;
         } else {
-            throw new NotExistStorageException(identifier);
+            throw new NotExistStorageException(uuid);
         }
     }
 
-    private Object handleNotContainsResult(String identifier) {
-        Object searchKey = getSearchKey(identifier);
+    private Object handleNotContainsResult(String uuid) {
+        Object searchKey = getSearchKey(uuid);
         if (!contains(searchKey)) {
             return searchKey;
         } else {
-            throw new ExistStorageException(identifier);
+            throw new ExistStorageException(uuid);
         }
-    }
-
-    protected String getIdentifier(Resume resume) {
-        return resume.getUuid();
     }
 
     protected abstract boolean contains(Object key);
