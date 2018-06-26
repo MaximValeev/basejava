@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
 
@@ -55,8 +55,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        storage.update(resume2);
-        assertEquals(resume2, storage.get(UUID_2));
+        Resume newResume = new Resume(UUID_2, "New Name");
+        storage.update(newResume);
+        assertSame(newResume, storage.get(UUID_2));
 
     }
 
