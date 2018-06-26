@@ -1,10 +1,10 @@
 package model;
 
-import java.util.HashMap;
+import java.util.Map;
 
-class SectionTitleAndText extends Section<HashMap<String, String>> {
+public class SectionTitleAndText extends Section<Map<String, String>> {
 
-    SectionTitleAndText(HashMap<String, String> data) {
+    public SectionTitleAndText(Map<String, String> data) {
         super(data);
     }
 }

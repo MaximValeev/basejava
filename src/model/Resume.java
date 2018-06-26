@@ -1,11 +1,8 @@
 package model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-import static model.SectionType.*;
 
 /**
  * com.urise.webapp.model.model.Resume class
@@ -80,71 +77,11 @@ public class Resume implements Comparable<Resume> {
         return contacts.get(contact);
     }
 
-    public void setPersonalData(String data) {
-        sections.put(PERSONAL, new SectionText(data));
+    public Section getSection(SectionType sectionType) {
+        return sections.get(sectionType);
     }
 
-    public String getPersonalData() {
-        if (sections.get(PERSONAL) == null) {
-            setPersonalData(null);
-        }
-        return (String) sections.get(PERSONAL).getData();
+    public void setSection(SectionType sectionType, Section section) {
+        sections.put(sectionType, section);
     }
-
-    public void setObjectiveData(String data) {
-        sections.put(OBJECTIVE, new SectionText(data));
-    }
-
-    public String getObjectiveData() {
-        if (sections.get(OBJECTIVE) == null) {
-            setObjectiveData(null);
-        }
-        return (String) sections.get(OBJECTIVE).getData();
-    }
-
-    public void setAchievementsData(List<String> data) {
-        sections.put(ACHIEVEMENTS, new SectionTextList(data));
-    }
-
-    public List<String> getAchievementsData() {
-        if (sections.get(ACHIEVEMENTS) == null) {
-            setAchievementsData(null);
-        }
-        return (List<String>) sections.get(ACHIEVEMENTS).getData();
-    }
-
-    public void setQualificationData(List<String> data) {
-        sections.put(QUALIFICATIONS, new SectionTextList(data));
-    }
-
-    public List<String> getQualificationData() {
-        if (sections.get(QUALIFICATIONS) == null) {
-            setQualificationData(null);
-        }
-        return (List<String>) sections.get(QUALIFICATIONS).getData();
-    }
-
-    public void setExperienceData(HashMap<String, String> data) {
-        sections.put(EXPERIENCE, new SectionTitleAndText(data));
-    }
-
-    public HashMap<String, String> getExperienceData() {
-        if (sections.get(EXPERIENCE) == null) {
-            setExperienceData(null);
-        }
-        return (HashMap<String, String>) sections.get(EXPERIENCE).getData();
-    }
-
-    public void setEducationData(HashMap<String, String> data) {
-        sections.put(EDUCATION, new SectionTitleAndText(data));
-    }
-
-    public HashMap<String, String> getEducationData() {
-        if (sections.get(EDUCATION) == null) {
-            setEducationData(null);
-        }
-        return (HashMap<String, String>) sections.get(EDUCATION).getData();
-    }
-
-
 }

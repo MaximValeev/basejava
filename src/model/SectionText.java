@@ -1,8 +1,8 @@
 package model;
 
-class SectionText extends Section<String> {
+public class SectionText extends Section<String> {
 
-    SectionText(String data) {
+    public SectionText(String data) {
         super(data);
     }
 }
