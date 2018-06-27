@@ -7,7 +7,7 @@ public enum ContactType {
     WEBPAGE("Домашняя страница");
 
 
-    String title;
+    private String title;
 
     ContactType(String title) {
         this.title = title;

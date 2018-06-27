@@ -1,6 +1,7 @@
 package model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,9 +15,9 @@ public class Resume implements Comparable<Resume> {
 
     private final String fullName;
 
-    private HashMap<ContactType, String> contacts;
+    private Map<ContactType, String> contacts;
 
-    private HashMap<SectionType, Section> sections;
+    private Map<SectionType, Section> sections;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -25,8 +26,8 @@ public class Resume implements Comparable<Resume> {
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
-        contacts = new HashMap<>();
-        sections = new HashMap<>();
+        contacts = new EnumMap<>(ContactType.class);
+        sections = new EnumMap<>(SectionType.class);
         this.fullName = fullName;
         this.uuid = uuid;
     }
@@ -60,7 +61,23 @@ public class Resume implements Comparable<Resume> {
     @Override
 
     public String toString() {
-        return uuid + '(' + fullName + ')';
+
+        StringBuilder resultTextResume = new StringBuilder();
+        resultTextResume.append(fullName).append('\n').append('\n');
+
+        for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
+            resultTextResume.append(contact.getKey().getTitle()).append('\n');
+            resultTextResume.append(contact.getValue()).append('\n');
+        }
+
+        for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
+            resultTextResume.append(section.getKey().getTitle()).append('\n');
+            resultTextResume.append(section.getValue().toString()).append('\n');
+        }
+
+        return resultTextResume.toString();
+
+
     }
 
     @Override
@@ -84,4 +101,6 @@ public class Resume implements Comparable<Resume> {
     public void setSection(SectionType sectionType, Section section) {
         sections.put(sectionType, section);
     }
+
+
 }
