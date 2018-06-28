@@ -20,10 +20,6 @@ public class SectionItemsList extends Section {
 
     @Override
     public String toString() {
-        StringBuilder resultContent = new StringBuilder();
-        for (String contentElement : data) {
-            resultContent.append(contentElement).append('\n');
-        }
-        return resultContent.toString();
+        return String.join("\n", data);
     }
 }
