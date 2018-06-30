@@ -76,7 +76,7 @@ public abstract class AbstractStorage<SearchKey> implements Storage {
 
     protected abstract void deleteElement(SearchKey key);
 
-    protected abstract SearchKey getSearchKey(String searchKey);
+    protected abstract SearchKey getSearchKey(String uuid);
 
     protected abstract List<Resume> getResumeList();
 

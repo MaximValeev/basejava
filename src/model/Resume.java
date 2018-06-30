@@ -63,7 +63,7 @@ public class Resume implements Comparable<Resume> {
     public String toString() {
 
         StringBuilder resultTextResume = new StringBuilder();
-        resultTextResume.append(fullName).append('\n').append('\n');
+        resultTextResume.append(fullName).append('\n');
 
         for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
             resultTextResume.append(contact.getKey().getTitle()).append('\n');

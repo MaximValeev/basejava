@@ -1,23 +1,40 @@
 package model;
 
+import java.util.Objects;
+
 public class SectionText extends Section {
-    private String data;
+    private String content;
 
     public SectionText(String content) {
-        this.data = content;
+        Objects.requireNonNull(content, "places must not be null");
+        this.content = content;
     }
 
-    public String getData() {
-        return data;
+    public String getContent() {
+        return content;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setContent(String content) {
+        this.content = content;
     }
-
 
     @Override
     public String toString() {
-        return data + '\n';
+        return content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SectionText that = (SectionText) o;
+
+        return content.equals(that.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return content.hashCode();
     }
 }
