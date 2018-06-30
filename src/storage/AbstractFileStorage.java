@@ -24,7 +24,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         for (File file : Objects.requireNonNull(directory.listFiles())) {
+            if(file.exists()){
             file.delete();
+            }
         }
     }
 
