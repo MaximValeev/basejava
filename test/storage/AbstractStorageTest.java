@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static model.SectionType.*;
-import static model.SectionType.EDUCATION;
-import static model.SectionType.EXPERIENCE;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
 
@@ -65,25 +64,33 @@ public abstract class AbstractStorageTest {
         qualifications.add("Analytical mind.");
         resume1.setSection(QUALIFICATIONS, new SectionItemsList(qualifications));
 
+        WorkPeriod universityStudyPeriod = new WorkPeriod("resume 1 speciality title", null,
+                DateUtil.of(2012, Month.SEPTEMBER), DateUtil.of(2016, Month.JULY));
+        WorkPeriod universitySecondPeriod = new WorkPeriod("resume 1 second speciality title",
+                "Not interesting description", DateUtil.of(2016, Month.SEPTEMBER),
+                DateUtil.of(2018, Month.AUGUST));
+        List<WorkPeriod> universityStudyPeriods = new ArrayList<>();
+        universityStudyPeriods.add(universityStudyPeriod);
+        universityStudyPeriods.add(universitySecondPeriod);
         Place universityStudy = new Place("Resume 1 study place", "https://www.Resume1studyplace.ru/",
-                DateUtil.of(2012, Month.SEPTEMBER),
-                DateUtil.of(2016, Month.JULY), "resume 1 speciality title", null);
-        universityStudy.addBusyPeriod(DateUtil.of(2016, Month.SEPTEMBER),
-                DateUtil.of(2018, Month.AUGUST), "resume 1 second speciality title",
-                "Not interesting description");
+                universityStudyPeriods);
 
-        Place onlineStudy = new Place("resume1 online school", "https://resume1OnlineSchool.com/",
-                DateUtil.of(2017, Month.SEPTEMBER),
-                LocalDate.now(), "SEO", "All about SEO");
+        WorkPeriod onlineStudyPeriod = new WorkPeriod("SEO", "All about SEO",
+                DateUtil.of(2017, Month.SEPTEMBER), LocalDate.now());
+        List<WorkPeriod> onlineStudyPeriods = new ArrayList<>();
+        onlineStudyPeriods.add(onlineStudyPeriod);
+        Place onlineStudy = new Place("resume1 online school", "https://resume1OnlineSchool.com/", onlineStudyPeriods);
+
         List<Place> studyPlaces = new ArrayList<>();
         studyPlaces.add(universityStudy);
         studyPlaces.add(onlineStudy);
         resume1.setSection(EDUCATION, new SectionPlace(studyPlaces));
 
-        Place dnsShop = new Place("resume1 workplace", "workForResume1.com",
-                DateUtil.of(2017, Month.SEPTEMBER),
-                LocalDate.now(),
-                "BigBoss", null);
+        WorkPeriod dnsShopPeriod = new WorkPeriod("BigBoss", null, DateUtil.of(2017, Month.SEPTEMBER),
+                LocalDate.now());
+        List<WorkPeriod> dnsShopPeriods = new ArrayList<>();
+        dnsShopPeriods.add(dnsShopPeriod);
+        Place dnsShop = new Place("resume1 workplace", "workForResume1.com", dnsShopPeriods);
         List<Place> workPlace = new ArrayList<>();
         workPlace.add(dnsShop);
         resume1.setSection(EXPERIENCE, new SectionPlace(workPlace));
@@ -106,29 +113,38 @@ public abstract class AbstractStorageTest {
         qualifications.add("resume2 qualifications3");
         resume2.setSection(QUALIFICATIONS, new SectionItemsList(qualificationsResume2));
 
+        WorkPeriod universityStudyResume2WorkPeriod = new WorkPeriod("Resume2TitleEducationPlace1",
+                "Resume2DescriptionEducationPlace1", DateUtil.of(2005, Month.JULY),
+                DateUtil.of(2010, Month.JULY));
+        WorkPeriod universityStudyResume2NewPeriod = new WorkPeriod("Resume2TitleEducationPlace2",
+                "Resume2TitleEducationPlace2", DateUtil.of(2011, Month.SEPTEMBER),
+                DateUtil.of(2019, Month.JULY));
+        List<WorkPeriod> universityResume2Periods = new ArrayList<>();
+        universityResume2Periods.add(universityStudyResume2WorkPeriod);
+        universityResume2Periods.add(universityStudyResume2NewPeriod);
         Place universityStudyResume2 = new Place("MIT", "http://web.mit.edu//",
-                DateUtil.of(2005, Month.JULY),
-                DateUtil.of(2010, Month.JULY), "Resume2TitleEducationPlace1",
-                "Resume2DescriptionEducationPlace1");
-        universityStudyResume2.addBusyPeriod(DateUtil.of(2011, Month.SEPTEMBER),
-                DateUtil.of(2019, Month.JULY), "Resume2TitleEducationPlace2",
-                "Resume2TitleEducationPlace2");
+                universityResume2Periods);
 
-        Place onlineStudyResume2 = new Place("topjava", "https://topjava.ru/",
-                DateUtil.of(2017, Month.AUGUST),
-                LocalDate.now(), "Java development", null);
+        WorkPeriod onlineStudyResume2Period = new WorkPeriod("Java development", null, DateUtil.of(2017, Month.AUGUST),
+                LocalDate.now());
+        List<WorkPeriod> onlineStudyResume2Periods = new ArrayList<>();
+        onlineStudyResume2Periods.add(onlineStudyResume2Period);
+        Place onlineStudyResume2 = new Place("topjava", "https://topjava.ru/", onlineStudyResume2Periods);
         List<Place> studyPlacesResume2 = new ArrayList<>();
         studyPlaces.add(universityStudyResume2);
         studyPlaces.add(onlineStudyResume2);
         resume2.setSection(EDUCATION, new SectionPlace(studyPlacesResume2));
 
-        Place dnsShopResume2 = new Place("DNSResume2", "dns-shop.ruResume2",
+        WorkPeriod dnsShopResume2Period = new WorkPeriod("Product Manager", null,
                 DateUtil.of(2010, Month.JULY),
-                LocalDate.now(),
-                "Product Manager", null);
+                LocalDate.now());
+        List<WorkPeriod> dnsShopResume2Periods = new ArrayList<>();
+        dnsShopResume2Periods.add(dnsShopResume2Period);
+        Place dnsShopResume2 = new Place("DNSResume2", "dns-shop.ruResume2", dnsShopResume2Periods);
         List<Place> workPlaceResume2 = new ArrayList<>();
         workPlace.add(dnsShopResume2);
         resume2.setSection(EXPERIENCE, new SectionPlace(workPlaceResume2));
+
         storage.save(resume2);
         storage.save(resume3);
         storage.save(resume4);
@@ -147,28 +163,35 @@ public abstract class AbstractStorageTest {
         List<String> qualificationsResume5 = new ArrayList<>();
         qualifications.add("resume5 qualifications1");
         qualifications.add("resume5 qualifications2");
-        qualifications.add("resume5 quralifications3");
+        qualifications.add("resume5 qualifications3");
         resume5.setSection(QUALIFICATIONS, new SectionItemsList(qualificationsResume5));
 
+        WorkPeriod universityStudyResume5Period = new WorkPeriod("resume5 speciality title", null,
+                DateUtil.of(1999, Month.SEPTEMBER), DateUtil.of(2005, Month.JULY));
+        List<WorkPeriod> universityStudyResume5Periods = new ArrayList<>();
+        universityStudyResume5Periods.add(universityStudyResume5Period);
         Place universityStudyResume5 = new Place("resume5 university", "https://www.resume5.ru/",
-                DateUtil.of(1999, Month.SEPTEMBER),
-                DateUtil.of(2005, Month.JULY), "resume5 speciality title", null);
-        universityStudy.addBusyPeriod(DateUtil.of(2006, Month.SEPTEMBER),
-                DateUtil.of(2010, Month.AUGUST), "resume5 speciality 2 title",
-                "Not interesting description");
-
+                universityStudyResume5Periods);
+        WorkPeriod universityResume5SecondPeriod = new WorkPeriod("resume5 speciality 2 title",
+                "Not interesting description", DateUtil.of(2006, Month.SEPTEMBER),
+                DateUtil.of(2010, Month.AUGUST));
+        universityStudy.addBusyPeriod(universityResume5SecondPeriod);
+        WorkPeriod onlineStudyResume5Period = new WorkPeriod("Android development", null,
+                DateUtil.of(2017, Month.SEPTEMBER), LocalDate.now());
+        List<WorkPeriod> onlineStudyResume5Periods = new ArrayList<>();
+        onlineStudyResume5Periods.add(onlineStudyResume5Period);
         Place onlineStudyResume5 = new Place("resume5 online study", "https://resume5online.com/",
-                DateUtil.of(2017, Month.SEPTEMBER),
-                LocalDate.now(), "Android development", null);
+                onlineStudyResume5Periods);
         List<Place> studyPlacesResume5 = new ArrayList<>();
         studyPlaces.add(universityStudyResume5);
         studyPlaces.add(onlineStudyResume5);
         resume5.setSection(EDUCATION, new SectionPlace(studyPlacesResume5));
 
-        Place dnsShopResume5 = new Place("resume5 Workplace", "resume5Workplace.ru",
-                DateUtil.of(2017, Month.SEPTEMBER),
-                LocalDate.now(),
-                "resume5 Worker", null);
+        WorkPeriod dnsShopResume5Period = new WorkPeriod("resume5 Worker", null,
+                DateUtil.of(2017, Month.SEPTEMBER), LocalDate.now());
+        List<WorkPeriod> dnsShopResume5Periods = new ArrayList<>();
+        dnsShopResume5Periods.add(dnsShopResume5Period);
+        Place dnsShopResume5 = new Place("resume5 Workplace", "resume5Workplace.ru", dnsShopResume5Periods);
         List<Place> workPlaceResume5 = new ArrayList<>();
         workPlace.add(dnsShopResume5);
         resume5.setSection(EXPERIENCE, new SectionPlace(workPlaceResume5));

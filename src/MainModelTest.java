@@ -29,26 +29,40 @@ public class MainModelTest {
         qualifications.add("Analytical mind.");
         resume.setSection(QUALIFICATIONS, new SectionItemsList(qualifications));
 
-        Place universityStudy = new Place("FEFU", "https://www.dvfu.ru/",
+        WorkPeriod universityStudyPeriod = new WorkPeriod("Energy and Resource-Saving Processes in " +
+                "Chemical Engineering, Pztroleum Chemistry and Biotechnology", null,
                 DateUtil.of(2012, Month.SEPTEMBER),
-                DateUtil.of(2016, Month.JULY), "Energy and Resource-Saving Processes in " +
-                "Chemical Engineering, Pztroleum Chemistry and Biotechnology", null);
-        universityStudy.addBusyPeriod(DateUtil.of(2016, Month.SEPTEMBER),
-                DateUtil.of(2018, Month.AUGUST), "Chemical Technology",
-                "Not interesting description");
+                DateUtil.of(2016, Month.JULY));
+        List<WorkPeriod> universityStudyPeriods = new ArrayList<>();
+        universityStudyPeriods.add(universityStudyPeriod);
+        Place universityStudy = new Place("FEFU", "https://www.dvfu.ru/", universityStudyPeriods);
 
-        Place onlineStudy = new Place("LoftSchool", "https://loftschool.com/",
+        WorkPeriod magistracyPeriod = new WorkPeriod("Chemical Technology",
+                "Not interesting description", DateUtil.of(2016, Month.SEPTEMBER),
+                DateUtil.of(2018, Month.AUGUST));
+        universityStudy.addBusyPeriod(magistracyPeriod);
+
+        WorkPeriod onlineStudyPeriod = new WorkPeriod("Android development", null,
                 DateUtil.of(2017, Month.SEPTEMBER),
-                LocalDate.now(), "Android development", null);
+                LocalDate.now());
+        WorkPeriod onlineStudyPeriod2 = new WorkPeriod("SEO", null,
+                DateUtil.of(2012, Month.SEPTEMBER),
+                DateUtil.of(2013, Month.JANUARY));
+        List<WorkPeriod> onlineStudyPeriods = new ArrayList<>();
+        onlineStudyPeriods.add(onlineStudyPeriod);
+        onlineStudyPeriods.add(onlineStudyPeriod2);
+        Place onlineStudy = new Place("LoftSchool", "https://loftschool.com/", onlineStudyPeriods);
+
         List<Place> studyPlaces = new ArrayList<>();
         studyPlaces.add(universityStudy);
         studyPlaces.add(onlineStudy);
         resume.setSection(EDUCATION, new SectionPlace(studyPlaces));
 
-        Place dnsShop = new Place("DNS", "dns-shop.ru",
-                DateUtil.of(2017, Month.SEPTEMBER),
-                LocalDate.now(),
-                "Q.A. Engineer", null);
+        WorkPeriod dnsShopPeriod = new WorkPeriod("Q.A. Engineer", null,
+                DateUtil.of(2017, Month.SEPTEMBER), LocalDate.now());
+        List<WorkPeriod> dnsShopPeriods = new ArrayList<>();
+        dnsShopPeriods.add(dnsShopPeriod);
+        Place dnsShop = new Place("DNS", "https://www.dns-shop.ru/", dnsShopPeriods);
         List<Place> workPlace = new ArrayList<>();
         workPlace.add(dnsShop);
         resume.setSection(EXPERIENCE, new SectionPlace(workPlace));
