@@ -7,18 +7,10 @@ public class MainFile {
     }
 
     private static void printAllFiles(File rootDir) {
-        File[] dirFiles = rootDir.listFiles();
-        if (dirFiles == null) return;
-        if (rootDir.isDirectory()) {
-            for (File file : dirFiles) {
-                if (file.isDirectory()) {
-                    printAllFiles(file);
-                } else {
-                    System.out.println(file.getName());
-                }
-            }
-        } else {
-            System.out.println(rootDir);
+        for (File file: rootDir.listFiles()) {
+            if (file.isDirectory()) {
+                printAllFiles(file);
+            } else System.out.println(file.getName());
         }
     }
 

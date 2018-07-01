@@ -23,7 +23,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
+        File[] listFile = directory.listFiles();
+        if (listFile == null) {
+            throw new StorageException("IO error", directory.getName());
+        }
+        for (File file : listFile) {
             deleteElement(file);
         }
     }
@@ -71,11 +75,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new StorageException("IO error", directory.getName());
         }
         for (File file : listFile) {
-            try {
-                allResumes.add(doRead(file));
-            } catch (IOException e) {
-                throw new StorageException("IO error", file.getName(), e);
-            }
+            allResumes.add(getElement(file));
         }
         return allResumes;
     }
