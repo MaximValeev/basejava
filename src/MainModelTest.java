@@ -1,10 +1,6 @@
 import model.*;
-import util.DateUtil;
 
-import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
 
 import static model.SectionType.*;
 
@@ -12,61 +8,26 @@ public class MainModelTest {
     public static void main(String[] args) {
         Resume resume = new Resume("Link");
 
-        resume.setContact(ContactType.PHONE, "8964-450-58-84");
-        resume.setSection(PERSONAL, new SectionText("Humble but brave."));
-        resume.setSection(OBJECTIVE, new SectionText("Protagonist of Nintendo's video" +
+        resume.addContact(ContactType.PHONE, "8964-450-58-84");
+        resume.addSection(PERSONAL, new SectionText("Humble but brave."));
+        resume.addSection(OBJECTIVE, new SectionText("Protagonist of Nintendo's video" +
                 " game series The Legend of Zelda."));
+        resume.addSection(ACHIEVEMENTS, new SectionItemsList("Saved Zelda.", "Better than Mario.", "Defends Hyrule."));
+        resume.addSection(QUALIFICATIONS, new SectionItemsList("Possession of a sword and shield.", "Agility.", "Analytical mind."));
 
-        List<String> achievements = new ArrayList<>();
-        achievements.add("Saved Zelda.");
-        achievements.add("Better than Mario.");
-        achievements.add("Defends Hyrule.");
-        resume.setSection(ACHIEVEMENTS, new SectionItemsList(achievements));
 
-        List<String> qualifications = new ArrayList<>();
-        qualifications.add("Possession of a sword and shield.");
-        qualifications.add("Agility.");
-        qualifications.add("Analytical mind.");
-        resume.setSection(QUALIFICATIONS, new SectionItemsList(qualifications));
+        resume.addSection(EDUCATION,
+                new SectionPlace(new Place("FEFU", "https://www.dvfu.ru/",
+                        new Place.WorkPosition("position1", "description1", 2012, Month.SEPTEMBER, 2016, Month.JULY),
+                        new Place.WorkPosition("position2", "description2", 2016, Month.SEPTEMBER, 2018, Month.JULY)),
+                        new Place("LoftSchool", "https://LoftSchool.com/",
+                                new Place.WorkPosition("androidDevelopment", "description", 2017, Month.SEPTEMBER))));
 
-        WorkPeriod universityStudyPeriod = new WorkPeriod("Energy and Resource-Saving Processes in " +
-                "Chemical Engineering, Pztroleum Chemistry and Biotechnology", null,
-                DateUtil.of(2012, Month.SEPTEMBER),
-                DateUtil.of(2016, Month.JULY));
-        List<WorkPeriod> universityStudyPeriods = new ArrayList<>();
-        universityStudyPeriods.add(universityStudyPeriod);
-        Place universityStudy = new Place("FEFU", "https://www.dvfu.ru/", universityStudyPeriods);
-
-        WorkPeriod magistracyPeriod = new WorkPeriod("Chemical Technology",
-                "Not interesting description", DateUtil.of(2016, Month.SEPTEMBER),
-                DateUtil.of(2018, Month.AUGUST));
-        universityStudy.addBusyPeriod(magistracyPeriod);
-
-        WorkPeriod onlineStudyPeriod = new WorkPeriod("Android development", null,
-                DateUtil.of(2017, Month.SEPTEMBER),
-                LocalDate.now());
-        WorkPeriod onlineStudyPeriod2 = new WorkPeriod("SEO", null,
-                DateUtil.of(2012, Month.SEPTEMBER),
-                DateUtil.of(2013, Month.JANUARY));
-        List<WorkPeriod> onlineStudyPeriods = new ArrayList<>();
-        onlineStudyPeriods.add(onlineStudyPeriod);
-        onlineStudyPeriods.add(onlineStudyPeriod2);
-        Place onlineStudy = new Place("LoftSchool", "https://loftschool.com/", onlineStudyPeriods);
-
-        List<Place> studyPlaces = new ArrayList<>();
-        studyPlaces.add(universityStudy);
-        studyPlaces.add(onlineStudy);
-        resume.setSection(EDUCATION, new SectionPlace(studyPlaces));
-
-        WorkPeriod dnsShopPeriod = new WorkPeriod("Q.A. Engineer", null,
-                DateUtil.of(2017, Month.SEPTEMBER), LocalDate.now());
-        List<WorkPeriod> dnsShopPeriods = new ArrayList<>();
-        dnsShopPeriods.add(dnsShopPeriod);
-        Place dnsShop = new Place("DNS", "https://www.dns-shop.ru/", dnsShopPeriods);
-        List<Place> workPlace = new ArrayList<>();
-        workPlace.add(dnsShop);
-        resume.setSection(EXPERIENCE, new SectionPlace(workPlace));
+        resume.addSection(EXPERIENCE, new SectionPlace(new Place("DNS", "https://www.dns-shop.ru/",
+                new Place.WorkPosition("Q.A. Engineer", "Android smartPhones testing", 2017, Month.OCTOBER))));
 
         System.out.println(resume.toString());
+
+
     }
 }

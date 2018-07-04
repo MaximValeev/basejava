@@ -1,8 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Link {
+public class Link implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String name;
     private String url;
 
@@ -40,6 +43,6 @@ public class Link {
 
     @Override
     public String toString() {
-        return name + ' '+ url;
+        return name + ' ' + url;
     }
 }

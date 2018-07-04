@@ -3,6 +3,8 @@ package model;
 import java.util.Objects;
 
 public class SectionText extends Section {
+    private static final long serialVersionUID = 1L;
+
     private String content;
 
     public SectionText(String content) {
@@ -12,10 +14,6 @@ public class SectionText extends Section {
 
     public String getContent() {
         return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     @Override

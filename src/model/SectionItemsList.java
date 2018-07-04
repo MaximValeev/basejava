@@ -1,11 +1,18 @@
 package model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class SectionItemsList extends Section {
+    private static final long serialVersionUID = 1L;
 
-    private List<String> items;
+
+    private final List<String> items;
+
+    public SectionItemsList(String... items) {
+        this(Arrays.asList(items));
+    }
 
     public SectionItemsList(List<String> items) {
         Objects.requireNonNull(items, "items must not be null");
@@ -14,10 +21,6 @@ public class SectionItemsList extends Section {
 
     public List<String> getItems() {
         return items;
-    }
-
-    public void setItems(List<String> items) {
-        this.items = items;
     }
 
     @Override

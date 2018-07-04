@@ -1,11 +1,18 @@
 package model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SectionPlace extends Section {
-    private List<Place> places;
+    private static final long serialVersionUID = 1L;
+
+    private final List<Place> places;
+
+    public SectionPlace(Place... places) {
+        this(Arrays.asList(places));
+    }
 
     public SectionPlace(List<Place> places) {
         Objects.requireNonNull(places, "places must not be null");
@@ -14,10 +21,6 @@ public class SectionPlace extends Section {
 
     public List<Place> getPlaces() {
         return places;
-    }
-
-    public void setPlaces(List<Place> places) {
-        this.places = places;
     }
 
     @Override
