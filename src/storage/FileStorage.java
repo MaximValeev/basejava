@@ -1,6 +1,7 @@
 package storage;
 
 import exception.StorageException;
+import inputOutput.WriteReadStrategy;
 import model.Resume;
 
 import java.io.*;

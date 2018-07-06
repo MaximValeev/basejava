@@ -1,4 +1,4 @@
-package storage;
+package inputOutput;
 
 import model.Resume;
 
