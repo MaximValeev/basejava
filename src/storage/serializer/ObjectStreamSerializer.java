@@ -1,11 +1,11 @@
-package inputOutput;
+package storage.serializer;
 
 import exception.StorageException;
 import model.Resume;
 
 import java.io.*;
 
-public class ObjectWriteReadToFile implements WriteReadStrategy {
+public class ObjectStreamSerializer implements StreamSerializer {
 
     @Override
     public void doWrite(OutputStream os, Resume resume) throws IOException {
@@ -15,8 +15,8 @@ public class ObjectWriteReadToFile implements WriteReadStrategy {
     }
 
     @Override
-    public Resume doRead(InputStream inputStream) throws IOException {
-        try (ObjectInputStream ois = new ObjectInputStream(inputStream)) {
+    public Resume doRead(InputStream is) throws IOException {
+        try (ObjectInputStream ois = new ObjectInputStream(is)) {
             try {
                 return (Resume) ois.readObject();
             } catch (ClassNotFoundException e) {

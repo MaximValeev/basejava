@@ -1,7 +1,11 @@
 package model;
 
 import util.DateUtil;
+import util.LocalDateAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -14,11 +18,15 @@ import java.util.Objects;
 import static util.DateUtil.NOW;
 import static util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Place implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Link homePage;
     private List<WorkPosition> workPositions = new ArrayList<>();
+
+    public Place() {
+    }
 
     public Place(String name, String url, WorkPosition... workPositions) {
         this(new Link(name, url), Arrays.asList(workPositions));
@@ -27,6 +35,14 @@ public class Place implements Serializable {
     public Place(Link homePage, List<WorkPosition> workPositions) {
         this.homePage = homePage;
         this.workPositions = workPositions;
+    }
+
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<WorkPosition> getWorkPositions() {
+        return workPositions;
     }
 
     @Override
@@ -56,14 +72,19 @@ public class Place implements Serializable {
 
     }
 
-
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class WorkPosition implements Serializable {
         private static final long serialVersionUID = 1L;
 
-        private final String title;
-        private final String description;
-        private final LocalDate startDate;
-        private final LocalDate endDate;
+        private String title;
+        private String description;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate endDate;
+
+        public WorkPosition() {
+        }
 
         public WorkPosition(String title, String description, int startYear, Month startMonth) {
             this(title, description, DateUtil.of(startYear, startMonth), NOW);
@@ -78,7 +99,7 @@ public class Place implements Serializable {
             Objects.requireNonNull(endDate, "endDate must not be null");
             Objects.requireNonNull(title, "title must not be null");
             this.title = title;
-            this.description = description;
+            this.description = description != null ? description : "";
             this.startDate = startDate;
             this.endDate = endDate;
         }

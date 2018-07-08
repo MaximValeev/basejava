@@ -7,6 +7,9 @@ public class SectionText extends Section {
 
     private String content;
 
+    public SectionText() {
+    }
+
     public SectionText(String content) {
         Objects.requireNonNull(content, "places must not be null");
         this.content = content;
@@ -35,4 +38,6 @@ public class SectionText extends Section {
     public int hashCode() {
         return content.hashCode();
     }
+
+
 }

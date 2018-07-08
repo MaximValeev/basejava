@@ -8,7 +8,10 @@ import java.util.stream.Collectors;
 public class SectionPlace extends Section {
     private static final long serialVersionUID = 1L;
 
-    private final List<Place> places;
+    private List<Place> places;
+
+    public SectionPlace() {
+    }
 
     public SectionPlace(Place... places) {
         this(Arrays.asList(places));
