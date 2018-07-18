@@ -7,7 +7,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.Reader;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 
 public class XmlParser {
     private final Marshaller marshaller;

@@ -57,35 +57,39 @@ public class DataStreamSerializer implements StreamSerializer {
 
             readSequence(dis, () -> {
                 SectionType section = SectionType.valueOf(dis.readUTF());
-                switch (section) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        resume.addSection(section, new SectionText(dis.readUTF()));
-                        break;
-                    case ACHIEVEMENTS:
-                    case QUALIFICATIONS:
-                        List<String> items = new ArrayList<>();
-                        readSequence(dis, () -> items.add(dis.readUTF()));
-                        resume.addSection(section, new SectionItemsList(items));
-                        break;
-                    case EDUCATION:
-                    case EXPERIENCE:
-                        List<Place> places = new ArrayList<>();
-                        readSequence(dis, () -> {
-                            List<Place.WorkPosition> workPositions = new ArrayList<>();
-                            readSequence(dis, () ->
-                                    workPositions.add(new Place.WorkPosition(dis.readUTF(), dis.readUTF(),
-                                            LocalDate.of(dis.readInt(), dis.readInt(), 1),
-                                            LocalDate.of(dis.readInt(), dis.readInt(), 1))));
-                            places.add(new Place(new Link(dis.readUTF(), dis.readUTF()), workPositions));
-                        });
-                        resume.addSection(section, new SectionPlace(places));
-                        break;
-                }
+                resume.addSection(section, readSection(dis, section));
             });
             return resume;
         }
     }
+
+    private Section readSection(DataInputStream dis, SectionType sectionType) throws IOException {
+        switch (sectionType) {
+            case PERSONAL:
+            case OBJECTIVE:
+                return new SectionText(dis.readUTF());
+            case ACHIEVEMENTS:
+            case QUALIFICATIONS:
+                List<String> items = new ArrayList<>();
+                readSequence(dis, () -> items.add(dis.readUTF()));
+                return new SectionItemsList(items);
+            case EDUCATION:
+            case EXPERIENCE:
+                List<Place> places = new ArrayList<>();
+                readSequence(dis, () -> {
+                    List<Place.WorkPosition> workPositions = new ArrayList<>();
+                    readSequence(dis, () ->
+                            workPositions.add(new Place.WorkPosition(dis.readUTF(), dis.readUTF(),
+                                    LocalDate.of(dis.readInt(), dis.readInt(), 1),
+                                    LocalDate.of(dis.readInt(), dis.readInt(), 1))));
+                    places.add(new Place(new Link(dis.readUTF(), dis.readUTF()), workPositions));
+                });
+                return new SectionPlace(places);
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
 
     private void writeDate(DataOutputStream dos, LocalDate date) throws IOException {
         dos.writeInt(date.getYear());
@@ -98,6 +102,7 @@ public class DataStreamSerializer implements StreamSerializer {
 
     private interface unitReader {
         void read() throws IOException;
+
     }
 
     private <T> void writeSequence(DataOutputStream dos, Collection<T> collection, unitWriter<T> writer) throws IOException {

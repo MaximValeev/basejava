@@ -1,24 +1,23 @@
 package storage;
 
+import config.Config;
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
-import model.*;
+import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static model.ContactType.*;
-import static model.SectionType.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
 
-    protected static final File STORAGE_DIR = new File("D:\\Study\\Java\\basejava\\storage");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     Storage storage;
 
@@ -47,7 +46,7 @@ public abstract class AbstractStorageTest {
         resume4 = new Resume(UUID_4, FULL_NAME_4);
         resume5 = new Resume(UUID_5, FULL_NAME_5);
 
-        resume1.addContact(PHONE, "1234567");
+        /*resume1.addContact(PHONE, "1234567");
         resume1.addContact(GITHUB, "GITHUB web page");
 
         resume1.addSection(PERSONAL, new SectionText("personalResume1"));
@@ -76,7 +75,7 @@ public abstract class AbstractStorageTest {
                                 new Place.WorkPosition("resume2Worker1", null, 2010, Month.DECEMBER)),
                         new Place("resume2Place2", "resume2Place2.ru",
                                 new Place.WorkPosition("resume2Worker2", "some description", 2005, Month.SEPTEMBER, 2009, Month.JULY))
-                ));
+                ));*/
 
     }
 
@@ -155,6 +154,7 @@ public abstract class AbstractStorageTest {
         List<Resume> sortedList = storage.getAllSorted();
         Assert.assertEquals(benchmarkList, sortedList);
     }
+
 
     @Test
     public void size() {
