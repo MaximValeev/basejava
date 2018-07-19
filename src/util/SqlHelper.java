@@ -4,32 +4,30 @@ import exception.StorageException;
 import sql.ConnectionFactory;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlHelper {
 
-//    public SqlHelper(ConnectionFactory connectionFactory, String SqlQuery, QueryHandle queryHandle) {
-//        try (Connection conn = connectionFactory.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(SqlQuery)) {
-//            queryHandle.execute(ps);
-//        } catch (SQLException e) {
-//            throw new StorageException(e);
-//        }
-//    }
+    private final ConnectionFactory connectionFactory;
 
-    public static  void execute(ConnectionFactory connectionFactory, String sql, QueryHandle queryHandle) {
+    public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
+        this.connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    }
+
+    public <T> T execute(String sql, QueryHandle<T> queryHandle) {
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            queryHandle.execute(ps);
+             PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            return queryHandle.execute(ps);
         } catch (SQLException e) {
             throw new StorageException(e);
         }
     }
 
-
-    public interface QueryHandle {
-        void execute(PreparedStatement ps) throws SQLException;
+    public interface QueryHandle<T> {
+        T execute(PreparedStatement ps) throws SQLException;
     }
 
 }
