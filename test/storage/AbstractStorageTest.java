@@ -10,34 +10,35 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
+import static model.ContactType.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
 
-    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
+    static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     Storage storage;
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
-    private static final String UUID_5 = "uuid5";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
+    private static final String UUID_5 = UUID.randomUUID().toString();
 
-    protected static final String FULL_NAME_1 = "Nathan";
-    protected static final String FULL_NAME_2 = "Kratos";
-    protected static final String FULL_NAME_3 = "Link";
-    protected static final String FULL_NAME_4 = "Joel";
-    protected static final String FULL_NAME_5 = "Zelda";
+    private static final String FULL_NAME_1 = "Nathan";
+    private static final String FULL_NAME_2 = "Kratos";
+    private static final String FULL_NAME_3 = "Link";
+    private static final String FULL_NAME_4 = "Joel";
+    private static final String FULL_NAME_5 = "Zelda";
 
-    public static final Resume resume1;
-    public static final Resume resume2;
-    public static final Resume resume3;
-    public static final Resume resume4;
-    public static final Resume resume5;
+    private static final Resume resume1;
+    private static final Resume resume2;
+    private static final Resume resume3;
+    private static final Resume resume4;
+    static final Resume resume5;
 
     static {
         resume1 = new Resume(UUID_1, FULL_NAME_1);
@@ -46,10 +47,11 @@ public abstract class AbstractStorageTest {
         resume4 = new Resume(UUID_4, FULL_NAME_4);
         resume5 = new Resume(UUID_5, FULL_NAME_5);
 
-        /*resume1.addContact(PHONE, "1234567");
+        resume1.addContact(PHONE, "1234567");
         resume1.addContact(GITHUB, "GITHUB web page");
+        resume1.addContact(EMAIL, "resume1@mail.ru");
 
-        resume1.addSection(PERSONAL, new SectionText("personalResume1"));
+        /*resume1.addSection(PERSONAL, new SectionText("personalResume1"));
         resume1.addSection(OBJECTIVE, new SectionText("objectiveResume1"));
         resume1.addSection(ACHIEVEMENTS, new SectionItemsList("achievement1Resume1", "achievement2Resume1", "achievement3Resume1"));
         resume1.addSection(QUALIFICATIONS, new SectionItemsList("qualification1Resume1", "qualification2Resume1", "qualification3Resume1"));
@@ -65,11 +67,11 @@ public abstract class AbstractStorageTest {
                         new Place("resume1University", "fefu.ru",
                                 new Place.WorkPosition("resume1Speciality", "boring", 2012, Month.SEPTEMBER, 2016, Month.JULY),
                                 new Place.WorkPosition("resume1Magistracy", "2X Boring", 2016, Month.SEPTEMBER, 2018, Month.JULY))
-                ));
+                ));*/
 
         resume2.addContact(EMAIL, "mmm@mail.ru");
-        resume2.addContact(WEBPAGE, "com.com");
-        resume2.addSection(EXPERIENCE,
+        resume2.addContact(WEBPAGE, "resume2@gmail.com");
+        /*resume2.addSection(EXPERIENCE,
                 new SectionPlace(
                         new Place("resume2Place", null,
                                 new Place.WorkPosition("resume2Worker1", null, 2010, Month.DECEMBER)),
@@ -102,7 +104,10 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_2, "New Name");
+        newResume.addContact(WEBPAGE, "RU.RU");
+        newResume.addContact(EMAIL, "resume2@updatedMail.ru");
         storage.update(newResume);
+        System.out.println(storage.get(UUID_2));
         assertEquals(newResume, storage.get(UUID_2));
 
     }
