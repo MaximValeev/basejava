@@ -106,6 +106,7 @@ public abstract class AbstractStorageTest {
         Resume newResume = new Resume(UUID_2, "New Name");
         newResume.addContact(WEBPAGE, "RU.RU");
         newResume.addContact(EMAIL, "resume2@updatedMail.ru");
+        newResume.addContact(GITHUB, "resume2github");
         storage.update(newResume);
         System.out.println(storage.get(UUID_2));
         assertEquals(newResume, storage.get(UUID_2));

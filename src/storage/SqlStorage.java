@@ -40,7 +40,7 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
-            updateContactsToDb(resume, conn);
+            setContactToDb(resume, conn);
             return null;
         });
     }
@@ -54,7 +54,7 @@ public class SqlStorage implements Storage {
                 ps.setString(2, resume.getFullName());
                 ps.execute();
             }
-            insertContactsToDb(resume, conn);
+            setContactToDb(resume, conn);
             return null;
         });
     }
@@ -74,7 +74,7 @@ public class SqlStorage implements Storage {
                     }
                     Resume resume = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        resume = addContact(rs, resume);
+                        resume = addContactToResume(rs, resume);
                     } while ((rs.next()));
                     return resume;
                 });
@@ -109,7 +109,7 @@ public class SqlStorage implements Storage {
                     prevId = id;
                     list.add(resume);
                 }
-                resume = addContact(rs, resume);
+                resume = addContactToResume(rs, resume);
             }
             return list;
         });
@@ -124,7 +124,7 @@ public class SqlStorage implements Storage {
                 });
     }
 
-    private Resume addContact(ResultSet rs, Resume resume) throws SQLException {
+    private Resume addContactToResume(ResultSet rs, Resume resume) throws SQLException {
         String value = rs.getString("value");
         String type = rs.getString("type");
         if (value != null && type != null) {
@@ -133,21 +133,13 @@ public class SqlStorage implements Storage {
         return resume;
     }
 
-    private void insertContactsToDb(Resume resume, Connection conn) throws SQLException {
-        setContactToDb(resume, conn,
-                "INSERT INTO contact (value, resume_uuid, type) VALUES (?, ?, ?)");
-    }
-
-    private void updateContactsToDb(Resume resume, Connection conn) throws SQLException {
-        setContactToDb(resume, conn,
-                "UPDATE contact SET value =? WHERE resume_uuid = ? AND type = ?");
-    }
-
-    private void setContactToDb(Resume resume, Connection conn, String query) throws SQLException {
+    private void setContactToDb(Resume resume, Connection conn) throws SQLException {
         try (PreparedStatement ps =
-                     conn.prepareStatement(query)) {
+                     conn.prepareStatement("INSERT INTO contact (value, resume_uuid, type) VALUES (?, ?, ?)" +
+                             "ON CONFLICT(resume_uuid, type) DO UPDATE SET  value = ?")) {
             for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
                 ps.setString(1, e.getValue());
+                ps.setString(4, e.getValue());
                 ps.setString(2, resume.getUuid());
                 ps.setString(3, e.getKey().name());
                 ps.addBatch();
