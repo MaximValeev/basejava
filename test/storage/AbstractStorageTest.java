@@ -49,7 +49,7 @@ public abstract class AbstractStorageTest {
 
         resume1.addContact(PHONE, "1234567");
         resume1.addContact(GITHUB, "GITHUB web page");
-        resume1.addContact(EMAIL, "resume1@mail.ru");
+        resume1.addContact(MAIL, "resume1@mail.ru");
 
         /*resume1.addSection(PERSONAL, new SectionText("personalResume1"));
         resume1.addSection(OBJECTIVE, new SectionText("objectiveResume1"));
@@ -69,9 +69,9 @@ public abstract class AbstractStorageTest {
                                 new Place.WorkPosition("resume1Magistracy", "2X Boring", 2016, Month.SEPTEMBER, 2018, Month.JULY))
                 ));*/
 
-        resume2.addContact(EMAIL, "mmm@mail.ru");
+        resume2.addContact(MAIL, "mmm@mail.ru");
         resume2.addContact(PHONE, "222222222");
-        resume2.addContact(WEBPAGE, "resume2webPage");
+        resume2.addContact(HOME_PAGE, "resume2webPage");
         /*resume2.addSection(EXPERIENCE,
                 new SectionPlace(
                         new Place("resume2Place", null,
@@ -105,8 +105,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_2, "New Name");
-        newResume.addContact(WEBPAGE, "resume2updatedWebPage");
-        newResume.addContact(EMAIL, "resume2@updatedMail.ru");
+        newResume.addContact(HOME_PAGE, "resume2updatedWebPage");
+        newResume.addContact(MAIL, "resume2@updatedMail.ru");
         newResume.addContact(GITHUB, "resume2github");
         newResume.deleteContact(PHONE);
         storage.update(newResume);
