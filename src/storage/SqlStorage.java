@@ -40,7 +40,7 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
-            setContactToDb(resume, conn);
+            updateContactToDb(resume);
             return null;
         });
     }
@@ -54,7 +54,7 @@ public class SqlStorage implements Storage {
                 ps.setString(2, resume.getFullName());
                 ps.execute();
             }
-            setContactToDb(resume, conn);
+            insertContactToDb(resume, conn);
             return null;
         });
     }
@@ -133,19 +133,31 @@ public class SqlStorage implements Storage {
         return resume;
     }
 
-    private void setContactToDb(Resume resume, Connection conn) throws SQLException {
+    private void insertContactToDb(Resume resume, Connection conn) throws SQLException {
         try (PreparedStatement ps =
-                     conn.prepareStatement("INSERT INTO contact (value, resume_uuid, type) VALUES (?, ?, ?)" +
-                             "ON CONFLICT(resume_uuid, type) DO UPDATE SET  value = ?")) {
+                     conn.prepareStatement("INSERT INTO contact (value, resume_uuid, type) VALUES (?, ?, ?)")) {
             for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
                 ps.setString(1, e.getValue());
-                ps.setString(4, e.getValue());
                 ps.setString(2, resume.getUuid());
                 ps.setString(3, e.getKey().name());
                 ps.addBatch();
             }
             ps.executeBatch();
-
         }
     }
+
+    private void updateContactToDb(Resume resume) {
+        sqlHelper.transactionExecute(conn -> {
+
+            try (PreparedStatement ps =
+                         conn.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
+                ps.setString(1, resume.getUuid());
+                ps.execute();
+            }
+            insertContactToDb(resume, conn);
+            return null;
+        });
+    }
+
+
 }

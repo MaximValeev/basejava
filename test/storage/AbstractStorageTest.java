@@ -70,7 +70,8 @@ public abstract class AbstractStorageTest {
                 ));*/
 
         resume2.addContact(EMAIL, "mmm@mail.ru");
-        resume2.addContact(WEBPAGE, "resume2@gmail.com");
+        resume2.addContact(PHONE, "222222222");
+        resume2.addContact(WEBPAGE, "resume2webPage");
         /*resume2.addSection(EXPERIENCE,
                 new SectionPlace(
                         new Place("resume2Place", null,
@@ -104,11 +105,11 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_2, "New Name");
-        newResume.addContact(WEBPAGE, "RU.RU");
+        newResume.addContact(WEBPAGE, "resume2updatedWebPage");
         newResume.addContact(EMAIL, "resume2@updatedMail.ru");
         newResume.addContact(GITHUB, "resume2github");
+        newResume.deleteContact(PHONE);
         storage.update(newResume);
-        System.out.println(storage.get(UUID_2));
         assertEquals(newResume, storage.get(UUID_2));
 
     }
