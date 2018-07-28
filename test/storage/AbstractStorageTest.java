@@ -4,6 +4,8 @@ import config.Config;
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
+import model.SectionItemsList;
+import model.SectionText;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static model.ContactType.*;
+import static model.SectionType.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -51,11 +54,11 @@ public abstract class AbstractStorageTest {
         resume1.addContact(GITHUB, "GITHUB web page");
         resume1.addContact(MAIL, "resume1@mail.ru");
 
-        /*resume1.addSection(PERSONAL, new SectionText("personalResume1"));
+        resume1.addSection(PERSONAL, new SectionText("personalResume1"));
         resume1.addSection(OBJECTIVE, new SectionText("objectiveResume1"));
         resume1.addSection(ACHIEVEMENTS, new SectionItemsList("achievement1Resume1", "achievement2Resume1", "achievement3Resume1"));
         resume1.addSection(QUALIFICATIONS, new SectionItemsList("qualification1Resume1", "qualification2Resume1", "qualification3Resume1"));
-        resume1.addSection(EXPERIENCE,
+        /* resume1.addSection(EXPERIENCE,
                 new SectionPlace(
                         new Place("resume1Place", null,
                                 new Place.WorkPosition("resume1Worker1", null, 2000, Month.DECEMBER, 2003, Month.JULY)),
@@ -72,6 +75,10 @@ public abstract class AbstractStorageTest {
         resume2.addContact(MAIL, "mmm@mail.ru");
         resume2.addContact(PHONE, "222222222");
         resume2.addContact(HOME_PAGE, "resume2webPage");
+        resume2.addSection(PERSONAL, new SectionText("persona2Resume2"));
+        resume2.addSection(OBJECTIVE, new SectionText("objectiveResume2"));
+        resume2.addSection(ACHIEVEMENTS, new SectionItemsList("achievement1Resume2", "achievement2Resume2", "achievement3Resume2"));
+        resume2.addSection(QUALIFICATIONS, new SectionItemsList("qualification1Resume2", "qualification2Resume2", "qualification3Resume2"));
         /*resume2.addSection(EXPERIENCE,
                 new SectionPlace(
                         new Place("resume2Place", null,
@@ -109,6 +116,10 @@ public abstract class AbstractStorageTest {
         newResume.addContact(MAIL, "resume2@updatedMail.ru");
         newResume.addContact(GITHUB, "resume2github");
         newResume.deleteContact(PHONE);
+        newResume.addSection(PERSONAL, new SectionText("persona2Resume2 updated"));
+        newResume.deleteSection(OBJECTIVE);
+        newResume.addSection(ACHIEVEMENTS, new SectionItemsList("achievement1Resume2 updated", "achievement2Resume2 updated", "achievement3Resume2 updated"));
+        newResume.addSection(QUALIFICATIONS, new SectionItemsList("qualification1Resume2 updated", "qualification2Resume2 updated", "qualification3Resume2 updated"));
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_2));
 

@@ -116,5 +116,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         sections.put(sectionType, section);
     }
 
-
+    public void deleteSection(SectionType sectionType) {
+        sections.remove(sectionType);
+    }
 }
