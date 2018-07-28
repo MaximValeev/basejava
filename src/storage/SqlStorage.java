@@ -40,8 +40,8 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
-            updateContactToDb(resume);
-            updateSectionToDb(resume);
+            updateContactToDb(resume, conn);
+            updateSectionToDb(resume, conn);
             return null;
         });
     }
@@ -202,24 +202,21 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void updateContactToDb(Resume resume) {
-        updateToDb(resume, "DELETE FROM contact WHERE resume_uuid = ?", this::insertContactToDb);
+    private void updateContactToDb(Resume resume, Connection conn) throws SQLException {
+        updateToDb(resume, conn, "DELETE FROM contact WHERE resume_uuid = ?", this::insertContactToDb);
     }
 
-    private void updateSectionToDb(Resume resume) {
-        updateToDb(resume, "DELETE FROM section WHERE resume_uuid = ?", this::insertSectionToDb);
+    private void updateSectionToDb(Resume resume, Connection conn) throws SQLException {
+        updateToDb(resume, conn, "DELETE FROM section WHERE resume_uuid = ?", this::insertSectionToDb);
     }
 
-    private void updateToDb(Resume resume, String sql, UpdateConSec updateConSec) {
-        sqlHelper.transactionExecute(conn -> {
-            try (PreparedStatement ps =
-                         conn.prepareStatement(sql)) {
-                ps.setString(1, resume.getUuid());
-                ps.execute();
-            }
-            updateConSec.update(resume, conn);
-            return null;
-        });
+    private void updateToDb(Resume resume, Connection conn, String sql, UpdateConSec updateConSec) throws SQLException {
+        try (PreparedStatement ps =
+                     conn.prepareStatement(sql)) {
+            ps.setString(1, resume.getUuid());
+            ps.execute();
+        }
+        updateConSec.update(resume, conn);
     }
 
     private interface UpdateConSec {
