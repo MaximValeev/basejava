@@ -5,6 +5,8 @@ import model.Resume;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static data.TestData.resume5;
+
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     AbstractArrayStorageTest(Storage storage) {

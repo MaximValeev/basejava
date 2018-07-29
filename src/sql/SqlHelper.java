@@ -1,7 +1,6 @@
 package sql;
 
 import exception.StorageException;
-import storage.Storage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

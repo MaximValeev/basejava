@@ -42,6 +42,7 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-Type", "text/html; charset=UTF-8");
         PrintWriter writer = response.getWriter();
+        writer.println("<title>Resume table</title>");
         writer.println("<b>Resume table</b>");
         writer.println("<table border = 1>");
         writer.println("<tr>");
