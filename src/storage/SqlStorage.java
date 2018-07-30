@@ -18,6 +18,11 @@ public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }
 
@@ -93,25 +98,6 @@ public class SqlStorage implements Storage {
 
             return r;
         });
-
-//        return sqlHelper.execute("" +
-//                        "   SELECT * FROM resume r " +
-//                        "LEFT JOIN contact c on r.uuid = c.resume_uuid " +
-//                        "LEFT JOIN section s on r.uuid = s.resume_uuid " +
-//                        "    WHERE r.uuid = ? \n",
-//                ps -> {
-//                    ps.setString(1, uuid);
-//                    ResultSet rs = ps.executeQuery();
-//                    if (!rs.next()) {
-//                        throw new NotExistStorageException(uuid);
-//                    }
-//                    Resume resume = new Resume(uuid, rs.getString("full_name"));
-//                    do {
-//                        resume = addContactToResume(rs, resume);
-//                        resume = addSectionToResume(rs, resume);
-//                    } while ((rs.next()));
-//                    return resume;
-//                });
     }
 
     @Override
