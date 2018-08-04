@@ -17,7 +17,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><input required type="text" name="fullName" size="50" value="${resume.fullName}"></dd>
+            <dd><input required type="text" name="fullName" size="50"></dd>
         </dl>
         <h3>Контакты:</h3>
         <p>
@@ -25,14 +25,14 @@
         <dl>
             <dt>${type.title}</dt>
         <c:choose>
-            <c:when test="${type != ContactType.PHONE}">
-                <dd><input type="text" name="${type.name()}" size="30" value="${resume.getContact(type)}"></dd>
-            </c:when>
-            <c:otherwise>
-                <dd><input required type="text" name="${type.name()}" size="30" value="${resume.getContact(type)}"></dd>
-            </c:otherwise>
+        <c:when test="${type != ContactType.PHONE}">
+            <dd><input type="text" name="${type.name()}" size="30"></dd>
+        </c:when>
+        <c:otherwise>
+            <dd><input required type="text" name="${type.name()}" size="30"></dd>
+        </c:otherwise>
         </c:choose>
-        </dl>
+    </dl>
         </c:forEach>
         <hr/>
         <c:forEach var="sectionType" items="${SectionType.values()}">
@@ -40,44 +40,37 @@
             <c:choose>
                 <c:when test="${sectionType == SectionType.PERSONAL || sectionType == SectionType.OBJECTIVE}">
                     <dl>
-                        <dt><h3>${sectionType.title}</h3></dt>
+                        <dt>${sectionType.title}</dt>
                         <dd><textarea name="${sectionType.name()}" cols="100"
-                                      rows="10">${resume.getSection(sectionType).content}</textarea></dd>
+                                      rows="10"></textarea></dd>
                         <br/>
                     </dl>
                 </c:when>
                 <c:when test="${sectionType == SectionType.ACHIEVEMENTS || sectionType == SectionType.QUALIFICATIONS}">
-                    <c:set var="newLine" value="
-"/>
-                    <c:set var="itemsList" value="${resume.getSection(sectionType)}"/>
                     <dl>
-                        <dt><h3>${sectionType.title}</h3></dt>
-                        <dd><textarea placeholder="каждый элемент с новой строки бее знаков препинания"
-                                      name="${sectionType.name()}" cols="50" rows="10"><c:if
-                                test="${not empty itemsList}">${String.join(newLine, resume.getSection(sectionType).items)}</c:if></textarea>
+                        <dt>${sectionType.title}</dt>
+                        <dd><textarea placeholder="каждый элемент с новой строки без знаков препинания"
+                                      name="${sectionType.name()}" cols="50" rows="10"></textarea>
                         </dd>
                         <br/>
                     </dl>
                 </c:when>
                 <c:when test="${sectionType == SectionType.EDUCATION || sectionType == SectionType.EXPERIENCE}">
-                    <c:set var="place" value="${resume.getSection(sectionType).places.get(0)}"/>
-                    <c:set var="placeUrl" scope="request" value="${place.homePage.url}"/>
                     <dl>
-                        <dt><h3>${sectionType.title != SectionType.EDUCATION.title ? " Последнее место работы" : "Релевантное образование"}</h3></dt>
-                        <c:set var="placeName" value="${place.homePage.name}"/><br/>
+                        <dt>${sectionType.title != SectionType.EDUCATION.title ? " Последнее место работы" : "Релевантное образование"}</dt>
+                        <br/>
                         <dt>Название места:</dt>
-                        <dd><input type="text" name="${sectionType}placeName" value="${placeName}"></dd>
+                        <dd><input type="text" name="${sectionType}placeName"></dd>
                         <br/>
                         <dt>Веб-сайт:</dt>
-                        <dd><input type="text" name="${sectionType}placeUrl" value="${placeUrl}"></dd>
+                        <dd><input type="text" name="${sectionType}placeUrl"></dd>
                         <br/>
                         <dt>Должность:</dt>
-                        <c:set var="workPosition" value="${place.workPositions.get(0)}"/>
-                        <dd><input type="text" name="${sectionType}workPosition" value="${workPosition.title}"></dd>
+                        <dd><input type="text" name="${sectionType}workPosition"></dd>
                         <br/>
-                        <dt>Описание должности:</dt>
+                        <dt>Описание даолжности:</dt>
                         <dd><textarea name="${sectionType}description" cols="50"
-                                      rows="10">${workPosition.description}</textarea></dd>
+                                      rows="10"></textarea></dd>
                     </dl>
                     <br/>
                 </c:when>

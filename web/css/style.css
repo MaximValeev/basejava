@@ -41,6 +41,10 @@ h2, h3 {
     margin: 15px 0 5px;
 }
 
+h3 {
+    color: rgba(5, 7, 5, 0.67);
+}
+
 li {
     margin: 15px 0;
 }

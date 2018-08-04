@@ -53,7 +53,7 @@ public class TestData {
                 ));
         resume1.addSection(EDUCATION,
                 new SectionPlace(
-                        new Place("resume1University", "fefu.ru",
+                        new Place("resume1University", "dvfu.ru",
                                 new Place.WorkPosition("resume1Speciality", "boring", 2012, Month.SEPTEMBER, 2016, Month.JULY),
                                 new Place.WorkPosition("resume1Magistracy", "2X Boring", 2016, Month.SEPTEMBER, 2018, Month.JULY))
                 ));

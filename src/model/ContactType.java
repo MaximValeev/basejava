@@ -7,18 +7,18 @@ public enum ContactType {
             return getTitle() + ": <a href=tel:" + value + ">" + value + "</a>";
         }
     },
-    MOBILE("Мобильный") {
+    EXTRA_PHONE("Доп. тел.") {
         @Override
         public String toHtml0(String value) {
             return getTitle() + ": <a href='tel:" + value + "'>" + value + "</a>";
         }
     },
-    HOME_PHONE("Домашний тел.") {
-        @Override
-        public String toHtml0(String value) {
-            return getTitle() + ": <a href='tel:" + value + "'>" + value + "</a>";
-        }
-    },
+//    HOME_PHONE("Домашний тел.") {
+//        @Override
+//        public String toHtml0(String value) {
+//            return getTitle() + ": <a href='tel:" + value + "'>" + value + "</a>";
+//        }
+//    },
     SKYPE("Skype") {
         @Override
         public String toHtml0(String value) {
@@ -34,13 +34,13 @@ public enum ContactType {
     LINKEDIN("Профиль LinkedIn") {
         @Override
         public String toHtml0(String value) {
-            return "<a href=:'" + value + "'>Профиль LinkedIn</a>";
+            return "<a href='//" + value + "'>Профиль LinkedIn</a>";
         }
     },
     GITHUB("Профиль GitHub") {
         @Override
         public String toHtml0(String value) {
-            return "<a href='" + value + "'>Профиль GitHub</a>";
+            return "<a href='//" + value + "'>Профиль GitHub</a>";
         }
     },
     STATCKOVERFLOW("Профиль Stackoverflow"){
@@ -52,7 +52,7 @@ public enum ContactType {
     HOME_PAGE("Домашняя страница") {
         @Override
         public String toHtml0(String value) {
-            return "<a href='" + value + "'>" + name() + "</a>";
+            return "<a href='//" + value + "'>" + getTitle() + "</a>";
         }
     };
 
