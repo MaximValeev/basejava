@@ -173,16 +173,6 @@ public class SqlStorage implements Storage {
         String secValue = rs.getString("section_value");
         if (secValue != null) {
             SectionType sectionType = SectionType.valueOf(rs.getString("section_type"));
-//            Section section = null;
-//            switch (sectionType) {
-//                case OBJECTIVE:
-//                case PERSONAL:
-//                    section = new SectionText(secValue);
-//                    break;
-//                case QUALIFICATIONS:
-//                case ACHIEVEMENTS:
-//                    section = new SectionItemsList(secValue.split("\n"));
-//            }
             resume.addSection(sectionType, JsonParser.read(secValue, Section.class));
         }
         return resume;

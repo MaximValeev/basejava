@@ -24,14 +24,7 @@
             <c:forEach var="type" items="${ContactType.values()}">
         <dl>
             <dt>${type.title}</dt>
-        <c:choose>
-        <c:when test="${type != ContactType.PHONE}">
-            <dd><input type="text" name="${type.name()}" size="30"></dd>
-        </c:when>
-        <c:otherwise>
-            <dd><input required type="text" name="${type.name()}" size="30"></dd>
-        </c:otherwise>
-        </c:choose>
+        <dd><input type="text" ${type == ContactType.PHONE ? 'required': ''} name="${type.name()}" size="30"></dd>
     </dl>
         </c:forEach>
         <hr/>

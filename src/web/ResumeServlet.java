@@ -24,14 +24,14 @@ public class ResumeServlet extends HttpServlet {
         String fullName = request.getParameter("fullName");
         Resume r;
         boolean toUpdate = true;
-        try {
+        if(!uuid.equals("")){
             r = storage.get(uuid);
             r.setFullName(fullName);
-        } catch (NotExistStorageException e) {
+        } else {
             toUpdate = false;
-            r = new Resume(uuid, fullName);
+            r = new Resume(fullName);
+            uuid = r.getUuid();
         }
-
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (deleteOrAddSection(value)) {
@@ -105,7 +105,7 @@ public class ResumeServlet extends HttpServlet {
                 r = storage.get(uuid);
                 break;
             case "add":
-                r = new Resume("Your Name");
+                r = new Resume("", "");
                 request.setAttribute("resume", r);
                 request.getRequestDispatcher("/WEB-INF/jsp/add.jsp").forward(request, response);
                 return;
