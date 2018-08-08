@@ -1,4 +1,5 @@
 <%@ page import="model.SectionType" %>
+<%@ page import="util.HtmlUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -45,9 +46,10 @@
                                 <h4>${placeName}</h4>
                             </c:if>
                             <c:forEach var="workPosition" items="${place.workPositions}">
-                                <p>
                                 <jsp:useBean id="workPosition" type="model.Place.WorkPosition"/>
-                                    <b><i>${workPosition.title}</i></b><br/>
+                                    <%=HtmlUtil.formatDates(workPosition)%><br/>
+                                <p>
+                                <b><i>${workPosition.title}</i></b><br/>
                                 ${workPosition.description}
                                 </p>
                             </c:forEach>

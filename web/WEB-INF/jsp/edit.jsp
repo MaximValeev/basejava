@@ -1,5 +1,6 @@
 <%@ page import="model.ContactType" %>
 <%@ page import="model.SectionType" %>
+<%@ page import="util.DateUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -24,14 +25,7 @@
             <c:forEach var="type" items="${ContactType.values()}">
         <dl>
             <dt>${type.title}</dt>
-        <c:choose>
-            <c:when test="${type != ContactType.PHONE}">
-                <dd><input type="text" name="${type.name()}" size="30" value="${resume.getContact(type)}"></dd>
-            </c:when>
-            <c:otherwise>
-                <dd><input required type="text" name="${type.name()}" size="30" value="${resume.getContact(type)}"></dd>
-            </c:otherwise>
-        </c:choose>
+        <dd><input type="text" ${type == ContactType.PHONE ? 'required': ''} name="${type.name()}" size="30" value="${resume.getContact(type)}" size="30"></dd>
         </dl>
         </c:forEach>
         <hr/>
@@ -65,14 +59,22 @@
                     <dl>
                         <dt><h3>${sectionType.title != SectionType.EDUCATION.title ? " Последнее место работы" : "Релевантное образование"}</h3></dt>
                         <c:set var="placeName" value="${place.homePage.name}"/><br/>
+                        <c:set var="workPosition" value="${place.workPositions.get(0)}"/>
                         <dt>Название места:</dt>
                         <dd><input type="text" name="${sectionType}placeName" value="${placeName}"></dd>
+                        <br/>
+                        <dt>Начальная дата:</dt>
+                        <dd><input type="text" name="${sectionType}startDate" size="10"
+                                   value="${DateUtil.format(workPosition.startDate)}"></dd>
+                        <br/>
+                        <dt>Конечная дата:</dt>
+                        <dd><input type="text" name="${sectionType}endDate" size="10"
+                                   value="${DateUtil.format(workPosition.endDate)}"></dd>
                         <br/>
                         <dt>Веб-сайт:</dt>
                         <dd><input type="text" name="${sectionType}placeUrl" value="${placeUrl}"></dd>
                         <br/>
                         <dt>Должность:</dt>
-                        <c:set var="workPosition" value="${place.workPositions.get(0)}"/>
                         <dd><input type="text" name="${sectionType}workPosition" value="${workPosition.title}"></dd>
                         <br/>
                         <dt>Описание должности:</dt>

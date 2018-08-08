@@ -10,6 +10,8 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
+    <a href="resume?action=add">Добавить резюме<img src="img/add.png"></a>
+    <br/>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th>Имя</th>
@@ -27,7 +29,8 @@
             </tr>
         </c:forEach>
     </table>
-    <a href="resume?action=add">Добавить резюме</a>
+    <br/>
+    <a href="resume?action=add">Добавить резюме<img src="img/add.png"></a>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

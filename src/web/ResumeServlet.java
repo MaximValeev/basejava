@@ -4,6 +4,7 @@ import config.Config;
 import exception.NotExistStorageException;
 import model.*;
 import storage.Storage;
+import util.DateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -66,9 +67,12 @@ public class ResumeServlet extends HttpServlet {
                     String placeUrl = request.getParameter(sectionType + "placeUrl");
                     String workPosition = request.getParameter(sectionType + "workPosition");
                     String positionDescr = request.getParameter(sectionType + "description");
+                    String startDate = request.getParameter(sectionType +"startDate");
+                    String endDate = request.getParameter(sectionType +"endDate");
+
                     if (deleteOrAddSection(placeName)) {
                         r.addSection(sectionType, new SectionPlace(new Place(placeName, placeUrl,
-                                new Place.WorkPosition(workPosition, positionDescr, 2018, Month.SEPTEMBER))));
+                                new Place.WorkPosition(workPosition, positionDescr, DateUtil.parse(startDate), DateUtil.parse(endDate)))));
                     } else {
                         r.getSections().remove(sectionType);
                     }
@@ -101,14 +105,14 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
-            case "edit":
                 r = storage.get(uuid);
                 break;
             case "add":
                 r = new Resume("", "");
-                request.setAttribute("resume", r);
-                request.getRequestDispatcher("/WEB-INF/jsp/add.jsp").forward(request, response);
-                return;
+                break;
+            case "edit":
+                r = storage.get(uuid);
+                break;
             default:
                 throw new IllegalArgumentException("Action " + action + "is illegal");
         }
